@@ -1,0 +1,27 @@
+server:
+  port: 8080
+  #tomcat端口号
+spring:
+  application:
+    name: doll
+    #应用名称，可选
+  datasource:
+    druid:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      url: jdbc:mysql://47.120.44.182:3306/doll?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&useSSL=false&allowPublicKeyRetrieval=true
+      #47.120.44.182为mysql所在服务器的ip
+      username: root
+      #mysql用户
+      password: aC6LGKBtSrVrU5@
+      #mysql密码
+mybatis-plus:
+  configuration:
+    #在映射实体或者属性时，将数据库中表名和字段名中的下划线去掉，按照驼峰命名法映射
+    #如表address_book->AddressBook,列名user_name->userName
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  global-config:
+    db-config:
+      id-type: ASSIGN_ID
+doll:
+  path: D:\img1\
