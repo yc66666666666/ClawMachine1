@@ -28,7 +28,8 @@ public class CategoryController {
     public  R<Page> pageR(int page,int pageSize){
         Page<Category> pageInfo=new Page<>(page,pageSize);
         LambdaQueryWrapper<Category> queryWrapper=new LambdaQueryWrapper<>();
-        queryWrapper.orderByAsc(Category::getSort);
+//        queryWrapper.orderByAsc(Category::getSort);
+        queryWrapper.orderByAsc(Category::getType).orderByAsc(Category::getSort);
         categoryService.page(pageInfo,queryWrapper);
         return  R.success(pageInfo);
     }

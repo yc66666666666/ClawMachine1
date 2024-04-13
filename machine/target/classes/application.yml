@@ -28,6 +28,6 @@ mybatis-plus:
     db-config:
       id-type: ASSIGN_ID
 doll:
-#  path: D:\img1\    #window
-  path: /usr/local/img/    #linux
+  path: D:\img1\    #window
+#  path: /usr/local/img/    #linux
 

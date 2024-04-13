@@ -22,14 +22,14 @@
           class="continue"
           @click="addClass('class')"
         >
-          + 新增分类
+          + 新增商品分类
         </el-button>
-<!--        <el-button-->
-<!--          type="primary"-->
-<!--          @click="addClass('meal')"-->
-<!--        >-->
-<!--          + 新增套餐分类-->
-<!--        </el-button>-->
+        <el-button
+          type="primary"
+          @click="addClass('meal')"
+        >
+          + 新增组件分类
+        </el-button>
       </div>
       <el-table
         :data="tableData"
@@ -40,14 +40,14 @@
           prop="name"
           label="分类名称"
         /></el-table-column>
-<!--        <el-table-column-->
-<!--          prop="type"-->
-<!--          label="分类类型"-->
-<!--        >-->
-<!--          <template slot-scope="scope">-->
-<!--            <span>{{ scope.row.type == '1' ? '菜品分类': '套餐分类' }}</span>-->
-<!--          </template>-->
-<!--        </el-table-column>-->
+        <el-table-column
+          prop="type"
+          label="分类类型"
+        >
+          <template slot-scope="scope">
+            <span>{{ scope.row.type == '1' ? '菜品分类': '组件分类' }}</span>
+          </template>
+        </el-table-column>
         <el-table-column
           prop="updateTime"
           label="操作时间"

@@ -61,6 +61,8 @@ public class CommodityController {
        Commodity commodity= commodityService.getById(id);
        return  R.success(commodity);
     }
+
+
     @PutMapping
     public R<String> update(@RequestBody Commodity commodity){
         log.info(commodity.toString());

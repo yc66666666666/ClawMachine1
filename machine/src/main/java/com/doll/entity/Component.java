@@ -1,59 +1,59 @@
 package com.doll.entity;
 
 import com.baomidou.mybatisplus.annotation.FieldFill;
-import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableLogic;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
-/**
- * 分类
- */
+
 @Data
-public class Category implements Serializable {
+public class Component implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     private Long id;
 
 
-    //类型 1 商品分类 2 组件分类
-    private Integer type;
-
-
-    //分类名称
+    //名称
     private String name;
+
+    //组件id，如有sensor,controller,camera,
+    private Long categoryId;
+
+    //描述信息
+    private String description;
+
+
+
+    private Integer status;
 
 
     //顺序
     private Integer sort;
 
 
-    //创建时间
     @TableField(fill = FieldFill.INSERT)
     private LocalDateTime createTime;
 
 
-    //更新时间
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private LocalDateTime updateTime;
 
 
-    //创建人
     @TableField(fill = FieldFill.INSERT)
     private Long createUser;
 
 
-    //修改人
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private Long updateUser;
 
 
-//    //是否删除
-//    private Integer isDeleted;
+    //是否删除
+    @TableLogic
+    private Integer isDeleted;
 
 }
+
