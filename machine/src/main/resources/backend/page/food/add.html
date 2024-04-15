@@ -91,8 +91,16 @@
               placeholder="请设置商品币数"
             />
           </el-form-item>
+          <el-form-item
+                  label="商品数量:"
+                  prop="count"
+          >
+            <el-input
+                    v-model="ruleForm.count"
+                    placeholder="请设置商品数量"
+            />
+          </el-form-item>
         </div>
-
 
 
 <!--        <el-form-item label="口味做法配置:">-->
@@ -180,8 +188,6 @@
 <!--              </div>-->
 <!--            </div>-->
 <!--          </el-form-item>-->
-
-
         </el-form-item>
         <div>
         </div>
@@ -280,6 +286,7 @@
               'name': '',
               'id': '',
               'price': '',
+              'count': '',
               'code': '',
               'image': '',
               'description': '',
@@ -322,6 +329,9 @@
                   'trigger': 'blur'
                 }
               ],
+              'count': [
+                {'required': true, 'message': '请选择商品数量', 'trigger': 'change'}
+              ],
             }
           }
         },
@@ -347,7 +357,7 @@
                 this.ruleForm.status = res.data.status == '1'
                 this.dishFlavors = res.data.flavors && res.data.flavors.map(obj => ({ ...obj, value: JSON.parse(obj.value),showOption: false }))
                 console.log('this.dishFlavors',this.dishFlavors)
-                // this.ruleForm.id = res.data.data.categoryId
+                this.ruleForm.count = res.data.count
                 // this.imageUrl = res.data.data.image
                 this.imageUrl = `/common/download?name=${res.data.image}`
               } else {
