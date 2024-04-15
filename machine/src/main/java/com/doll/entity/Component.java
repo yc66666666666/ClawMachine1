@@ -27,7 +27,7 @@ public class Component implements Serializable {
     private String description;
 
 
-
+     //1表示已绑定，0表示未绑定，数据库默认为0
     private Integer status;
 
 

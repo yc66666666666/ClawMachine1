@@ -37,4 +37,6 @@ public class ComponentServiceImpl extends ServiceImpl<ComponentMapper, Component
                 .collect(Collectors.toList());
         super.removeByIds(idList);
     }
+
+
 }

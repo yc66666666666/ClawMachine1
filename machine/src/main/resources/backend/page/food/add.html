@@ -83,12 +83,12 @@
         </div>
         <div>
           <el-form-item
-            label="商品价格:"
+            label="售价币数:"
             prop="price"
           >
             <el-input
               v-model="ruleForm.price"
-              placeholder="请设置商品价格"
+              placeholder="请设置商品币数"
             />
           </el-form-item>
         </div>
@@ -305,7 +305,7 @@
                   // 'message': '请填写商品价格',
                   validator: (rules, value, callback) => {
                     if (!value) {
-                      callback(new Error('请填写商品价格'))
+                      callback(new Error('请填写商品币数'))
                     } else {
                       const reg = /^\d+(\.\d{0,2})?$/
                       if (reg.test(value)) {

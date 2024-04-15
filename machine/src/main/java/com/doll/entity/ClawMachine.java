@@ -1,39 +1,26 @@
 package com.doll.entity;
 
 import com.baomidou.mybatisplus.annotation.FieldFill;
-import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableLogic;
 import lombok.Data;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-/**
- 菜品
- */
 @Data
-public class Commodity implements Serializable {
+public class ClawMachine implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private Long id;
+    private Long id;   //主键
 
 
-    //菜品名称
+    //名称
     private String name;
 
 
-    //菜品分类id
-    private Long categoryId;
-
-
-    //菜品价格
-    private BigDecimal price;
-
-
-    //商品码
-    private String code;
 
 
     //图片
@@ -44,15 +31,23 @@ public class Commodity implements Serializable {
     private String description;
 
 
-    //0 停售 1 起售
+    //0 停用 1 启用
     private Integer status;
 
 
     //顺序
     private Integer sort;
 
-    //商品的个数
-    private  Integer count;
+    //传感器id
+    private Long sensorId;
+
+    //控制器id
+    private Long controllerId;
+    //摄像头id
+    private Long cameraId ;
+
+    //商品ID
+    private Long commodityId;
 
     @TableField(fill = FieldFill.INSERT)
     private LocalDateTime createTime;
@@ -71,6 +66,7 @@ public class Commodity implements Serializable {
 
 
     //是否删除
+    @TableLogic
     private Integer isDeleted;
 
 }
