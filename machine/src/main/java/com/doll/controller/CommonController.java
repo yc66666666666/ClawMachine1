@@ -22,7 +22,7 @@ import java.util.UUID;
 public class CommonController {
     @Value("${doll.path}")
     private String basePath;
-    @PostMapping("/upload")
+    @PostMapping("/upload")   //将文件上传到服务器
     public R<String> upload(MultipartFile file){
         log.info(file.toString());
         String originalFileName=file.getOriginalFilename();
@@ -39,7 +39,7 @@ public class CommonController {
         }
         return R.success(fileName);
     }
-    @GetMapping("/download")
+    @GetMapping("/download")   //将文件从服务器下载到本地
     public void download(String name, HttpServletResponse response){
         try{
             FileInputStream fileInputStream=new FileInputStream(new File(basePath+name));

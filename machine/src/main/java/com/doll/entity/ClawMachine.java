@@ -20,20 +20,14 @@ public class ClawMachine implements Serializable {
     //名称
     private String name;
 
-
-
-
     //图片
     private String image;
-
 
     //描述信息
     private String description;
 
-
     //0 停用 1 启用
     private Integer status;
-
 
     //顺序
     private Integer sort;
