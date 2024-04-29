@@ -22,7 +22,7 @@ public class Employee implements Serializable {
     private String phone;
 
     private String sex;
-
+    // 身份证号码
     private String idNumber;
 
     private Integer status;

@@ -1,11 +1,13 @@
 server:
-  port: 8080
-  #tomcat端口号
-#  ssl:   #搞https的.
-#    key-store: classpath:xswwj.cn.jks
-#    key-store-type: JKS
-#    key-store-password: aC6LGKBtSrVrU5@
+  port: 443      #tomcat端口号,https默认端口
+#  port:8080     #  tomcat端口号
+
+  ssl:   #搞https的.
+    key-store: classpath:xswwj.cn.jks
+    key-store-type: JKS
+    key-store-password: aC6LGKBtSrVrU5@
 spring:
+
   application:
     name: doll
     #应用名称，可选
@@ -30,4 +32,7 @@ mybatis-plus:
 doll:
   path: D:\img1\    #window
 #  path: /usr/local/img/    #linux
+
+
+
 
