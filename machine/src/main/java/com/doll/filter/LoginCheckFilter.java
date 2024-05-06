@@ -23,10 +23,12 @@
 //        String requestURI=request.getRequestURI();
 //        log.info("拦截到请求:{}",requestURI);
 //        String[] urls=new String[]{
-//          "/employee/login",
-//          "/employee/logout",
-//          "/backend/**",
-//          "/front/**"
+//                "/employee/login",
+//                "/employee/logout",
+//                "/backend/**",
+//                "/front/**",
+//                "/user/sendMsg",
+//                "/user/login"
 //        };
 //        boolean check=check(urls,requestURI);
 //        if (check){
@@ -34,12 +36,23 @@
 //            filterChain.doFilter(request,response);
 //            return;
 //        }
+//
+//        //管理员
 //        if (request.getSession().getAttribute("employee")!=null){
-//            log.info("用户已经登入,用户id为{}",request.getSession().getAttribute("employee"));
+//            log.info("管理员已经登入,用户id为{}",request.getSession().getAttribute("employee"));
 //            BaseContext.setCurrentId((Long)request.getSession().getAttribute("employee"));
 //            filterChain.doFilter(request,response);
 //            return;
 //        }
+//
+//        //用户
+//        if (request.getSession().getAttribute("user")!=null){
+//            log.info("用户已经登入,用户id为{}",request.getSession().getAttribute("user"));
+//            BaseContext.setCurrentId((Long)request.getSession().getAttribute("user"));
+//            filterChain.doFilter(request,response);
+//            return;
+//        }
+//
 //        log.info("用户未登录");
 //        response.getWriter().write(JSON.toJSONString(R.error("NOTLOGIN")));
 //        return;
