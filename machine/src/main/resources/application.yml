@@ -33,6 +33,13 @@ doll:
   path: D:\img1\    #window
 #  path: /usr/local/img/    #linux
 
+camera:
+  APP_KEY: 37ee314914d949f7a1be8659633b8494
+  APP_SECRET: c662cfa22c1edc6cef5c4766a42ebe7e
+  ACCESS_TOKEN_URL: https://open.ys7.com/api/lapp/token/get
+  VIDEO_URL: https://open.ys7.com/api/lapp/v2/live/address/get
+
+
 
 
 

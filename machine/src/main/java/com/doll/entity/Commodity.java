@@ -20,17 +20,19 @@ public class Commodity implements Serializable {
     private Long id;
 
 
-    //菜品名称
+    //商品名称
     private String name;
 
 
-    //菜品分类id
+    //商品分类id
     private Long categoryId;
 
 
-    //菜品价格
+    //商品价格
     private BigDecimal price;
 
+    //商品价值多少金币
+    private BigDecimal value;
 
     //商品码
     private String code;

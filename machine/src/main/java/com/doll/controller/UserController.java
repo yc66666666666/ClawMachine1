@@ -1,6 +1,7 @@
 package com.doll.controller;
 
 import com.aliyuncs.utils.StringUtils;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.doll.common.BaseContext;
 import com.doll.common.R;
 import com.doll.dto.UserDto;
@@ -24,10 +25,16 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @PostMapping("/sendMsg")
+    @PostMapping("/sendMsg")    //用来绑定手机号码
     public R<String> sendMsg(@RequestBody User user, HttpSession session){
         String phone=user.getPhone();
         if(!StringUtils.isEmpty(phone)){
+            LambdaQueryWrapper<User> queryWrapper=new LambdaQueryWrapper<>();
+            queryWrapper.eq(User::getPhone,phone);
+            int count=userService.count(queryWrapper);
+            if (count>0){                           //判断该手机是否被绑定
+                return R.error("该手机已经绑定了账户");
+            }
             String code= ValidateCodeUtils.generateValidateCode(6).toString();
             SMSUtils.sendMessage("瑞吉外卖","SMS_462260361",phone,code);
             session.setAttribute(phone,code);
