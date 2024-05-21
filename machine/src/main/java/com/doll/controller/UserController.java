@@ -11,11 +11,13 @@ import com.doll.utils.SMSUtils;
 import com.doll.utils.ValidateCodeUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.HttpSessionRequiredException;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 @Slf4j
 @RestController
@@ -24,6 +26,9 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private RedisTemplate redisTemplate;
 
     @PostMapping("/sendMsg")    //用来绑定手机号码
     public R<String> sendMsg(@RequestBody User user, HttpSession session){
@@ -37,7 +42,8 @@ public class UserController {
             }
             String code= ValidateCodeUtils.generateValidateCode(6).toString();
             SMSUtils.sendMessage("瑞吉外卖","SMS_462260361",phone,code);
-            session.setAttribute(phone,code);
+//            session.setAttribute(phone,code);   //把验证码存放在session里
+            redisTemplate.opsForValue().set(phone,code,5, TimeUnit.MINUTES);  //把验证码存放在redis里，有效期为5分钟
             return R.success("手机验证码发送成功");
         }
         return R.error("短信发送失败");
@@ -45,13 +51,16 @@ public class UserController {
 
     @PutMapping("/bind")
     public R<String> bindPhone(@RequestBody UserDto user,HttpSession session){
-        user.setId(BaseContext.getCurrentId());
+        user.setId(BaseContext.getCurrentId()); //实际用
+//        user.setId(1417012167126876162L); //测试用
         String phone=user.getPhone();
         String code=user.getCode();
-        Object codeInSession = session.getAttribute(phone);
+//        Object codeInSession = session.getAttribute(phone);   //从session中获取验证码
+        Object codeInSession = redisTemplate.opsForValue().get(phone);//从redis中获取验证码
         if (codeInSession!=null && codeInSession.equals(code)){
             userService.updateById(user);
         }
+        redisTemplate.delete(phone); //删除redis里面的缓存
         return R.success("绑定手机号码成功");
     }
 

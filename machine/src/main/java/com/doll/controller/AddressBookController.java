@@ -71,7 +71,7 @@ public class AddressBookController {
     @GetMapping("/list")   //传用户id
      public R<List<AddressBook>> listR(AddressBook addressBook){
         LambdaQueryWrapper<AddressBook> queryWrapper=new LambdaQueryWrapper<>();
-        queryWrapper.eq(addressBook.getUserId()!=null,AddressBook::getUserId,addressBook.getUserId());
+        queryWrapper.eq(AddressBook::getUserId,addressBook.getUserId());
         queryWrapper.orderByDesc(AddressBook::getUpdateTime);
         return R.success(addressBookService.list(queryWrapper));
      }
@@ -87,6 +87,13 @@ public class AddressBookController {
         addressBookService.updateById(addressBook);
         return R.success("修改地址成功");
      }
+
+
+    @DeleteMapping
+    public R<String> delete(String id){
+        addressBookService.removeById(id);
+        return R.success("删除地址成功");
+    }
 
 
 

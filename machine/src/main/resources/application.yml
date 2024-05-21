@@ -20,6 +20,20 @@ spring:
       #mysql用户
       password: aC6LGKBtSrVrU5@
       #mysql密码
+  redis:
+    host: 47.116.210.128
+    port: 6379
+    password: aC6LGKBtSrVrU5@   #redis的密码
+    database: 0
+  cache:
+    redis:
+      time-to-live: 3600000
+#    jedis:           #Redis连接池配置
+#      pool:
+#        max-active: 8   #最大连接数量
+#        max-wait: 1ms #连接池最大阻塞等待时间
+#        max-idle: 4 #连接池中最大空闲连接
+#        min-idle: 0 #连接池中最大空闲连接
 mybatis-plus:
   configuration:
     #在映射实体或者属性时，将数据库中表名和字段名中的下划线去掉，按照驼峰命名法映射

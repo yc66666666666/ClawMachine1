@@ -9,10 +9,16 @@ import com.doll.entity.Commodity;
 import com.doll.service.CategoryService;
 import com.doll.service.CommodityService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.ibatis.annotations.Delete;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.CacheManager;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -25,12 +31,22 @@ public class CommodityController {
     private CommodityService commodityService;
     @Autowired
     private CategoryService categoryService;
+
+    @Autowired
+    private CacheManager cacheManager;
+
+    //CachePut:将方法返回值放入缓存
+//    @CachePut(value = "commodityCache",key = "#commodity.id")
+    @CacheEvict(value = "commodityCache" ,allEntries = true)
     @PostMapping
     public R<String> save(@RequestBody Commodity commodity){
         log.info(commodity.toString());
+        commodity.setValue(BigDecimal.valueOf(12)); //测试用
         commodityService.save(commodity);
         return R.success("新增商品成功");
     }
+
+    @Cacheable(value = "commodityCache",key = "#page+'_'+#pageSize+'_'+#name",unless = "#result.data==null")
     @GetMapping("/page")
     public R<Page> pageR(int page,int pageSize,String name){
         Page<Commodity> pageInfo=new Page<>(page,pageSize);
@@ -56,13 +72,17 @@ public class CommodityController {
         return R.success(commodityDtoPage);
     }
 
+    //Cacheable有数据则直接调用，如果没有将返回的数据放入缓存
+    @Cacheable(value = "commodityCache",key = "#id",unless = "#result.data==null")
     @GetMapping("/{id}")
     public R<Commodity> get(@PathVariable Long id){
        Commodity commodity= commodityService.getById(id);
+       System.out.println("111111"+commodity);
        return  R.success(commodity);
     }
 
-
+//    @CacheEvict(value ="commodityCache",key = "#commodity.id" )
+    @CacheEvict(value = "commodityCache" , allEntries = true)
     @PutMapping
     public R<String> update(@RequestBody Commodity commodity){
         log.info(commodity.toString());
@@ -70,11 +90,15 @@ public class CommodityController {
         return R.success("修改菜品成功");
     }
 
+    @CacheEvict(value = "commodityCache" , allEntries = true)
     @PostMapping("/status/{status}")
     public R<String> changeStatus(@PathVariable int status, String ids){
         commodityService.changeStatus(status, ids);
         return R.success("商品状态修改成功");
     }
+
+//    @CacheEvict(value = "commodityCache",key = "#ids")
+    @CacheEvict(value = "commodityCache",allEntries = true)
     @DeleteMapping
     public R<String> delete(String ids){
         commodityService.removeByIds1(ids);
