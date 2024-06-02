@@ -1,0 +1,41 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="en">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <title>Title</title>-->
+<!--</head>-->
+<!--<body>-->
+
+<!--</body>-->
+<!--</html>-->
+
+<template>
+    <div>
+        <button @click="startPlayback">开始回放</button>
+        <video id="playbackVideo" controls></video>
+    </div>
+</template>
+
+<script>
+    import EzvizSDK from 'ezviz-sdk'; // 假设有一个萤石 SDK 的模块
+
+    export default {
+        name: 'PlaybackComponent',
+        data() {
+            return {
+                deviceSerial: 'BC6893973',
+                channelNo: 1,
+                beginTime: '20240528151530'
+            };
+        },
+        methods: {
+            startPlayback() {
+                const url = `ezopen://open.ys7.com/${this.deviceSerial}/${this.channelNo}.rec?begin=${this.beginTime}`;
+                EzvizSDK.playback({
+                    url: url,
+                    elementId: 'playbackVideo' // 指定用于播放的 HTML 元素的 ID
+                });
+            }
+        }
+    }
+</script>

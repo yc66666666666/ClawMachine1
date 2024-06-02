@@ -65,7 +65,7 @@ public class ComponentController {
         return  R.success(component);
     }
 
-    @PutMapping                                           //未测
+    @PutMapping
     public  R<String> update(@RequestBody Component component){
         log.info(component.toString());
         componentService.updateById(component);
@@ -73,16 +73,15 @@ public class ComponentController {
     }
 
     @PostMapping("/status/{status}")
-    public R<String> changeStatus(@PathVariable int status,String ids){ //未测
+    public R<String> changeStatus(@PathVariable int status,String ids){
         componentService.changeStatus(status,ids);
         return R.success("组件的状态修改成功");
     }
      @DeleteMapping
-    public R<String> delete(String ids){      //未测
+    public R<String> delete(String ids){
         componentService.deleteByIds(ids);
         return R.success("成功删除组件");
     }
-
 
 
 

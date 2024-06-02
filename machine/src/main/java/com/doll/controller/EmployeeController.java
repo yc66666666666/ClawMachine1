@@ -63,6 +63,7 @@ public class EmployeeController {
         employeeService.save(employee);
         return  R.success("新增员工成功");
     }
+
     @GetMapping("/page")
     public  R<Page> pageR(int page,int pageSize,String name){
       log.info("page={},pageSize={},name={}",page,pageSize,name);
@@ -73,6 +74,8 @@ public class EmployeeController {
       employeeService.page(pageInfo,queryWrapper);
       return R.success(pageInfo);
     }
+
+
     @PutMapping
     public R<String> update(HttpServletRequest request,@RequestBody Employee employee){
         log.info(employee.toString());

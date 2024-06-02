@@ -41,7 +41,7 @@ public class CommodityController {
     @PostMapping
     public R<String> save(@RequestBody Commodity commodity){
         log.info(commodity.toString());
-        commodity.setValue(BigDecimal.valueOf(12)); //测试用
+//        commodity.setValue(BigDecimal.valueOf(12)); //测试用
         commodityService.save(commodity);
         return R.success("新增商品成功");
     }
