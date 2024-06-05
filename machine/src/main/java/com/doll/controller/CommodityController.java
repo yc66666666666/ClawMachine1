@@ -45,10 +45,10 @@ public class CommodityController {
         commodityService.save(commodity);
         return R.success("新增商品成功");
     }
-
-    @Cacheable(value = "commodityCache",key = "#page+'_'+#pageSize+'_'+#name",unless = "#result.data==null")
+     //管理员查询
+    @Cacheable(value = "commodityCache",key = "'admin_'+#page+'_'+#pageSize+'_'+#name",unless = "#result.data==null")
     @GetMapping("/page")
-    public R<Page> pageR(int page,int pageSize,String name){
+    public R<Page> pageAdmin(int page,int pageSize,String name){
         Page<Commodity> pageInfo=new Page<>(page,pageSize);
         Page<CommodityDto> commodityDtoPage=new Page<>();
         LambdaQueryWrapper<Commodity> queryWrapper=new LambdaQueryWrapper<>();
@@ -67,6 +67,33 @@ public class CommodityController {
                commodityDto.setCategoryName(categoryName);
            }
            return commodityDto;
+        }).collect(Collectors.toList());
+        commodityDtoPage.setRecords(list);
+        return R.success(commodityDtoPage);
+    }
+    //用户查询
+    @Cacheable(value = "commodityCache",key = "'user_'+#page+'_'+#pageSize+'_'+#name",unless = "#result.data==null")
+    @GetMapping("/pageUser")
+    public R<Page> pageUser(int page,int pageSize,String name){
+        Page<Commodity> pageInfo=new Page<>(page,pageSize);
+        Page<CommodityDto> commodityDtoPage=new Page<>();
+        LambdaQueryWrapper<Commodity> queryWrapper=new LambdaQueryWrapper<>();
+        queryWrapper.like(name!=null,Commodity::getName,name);
+        queryWrapper.orderByDesc(Commodity::getUpdateTime).orderByDesc(Commodity::getCategoryId);
+        queryWrapper.eq(Commodity::getStatus,1);
+        commodityService.page(pageInfo,queryWrapper);
+        BeanUtils.copyProperties(pageInfo,commodityDtoPage,"records");
+        List<Commodity> records=pageInfo.getRecords();
+        List<CommodityDto> list=records.stream().map((item)->{
+            CommodityDto commodityDto=new CommodityDto() ;
+            BeanUtils.copyProperties(item,commodityDto);
+            Long categoryId=item.getCategoryId();
+            Category category=categoryService.getById(categoryId);
+            if(category!=null){
+                String categoryName=category.getName();
+                commodityDto.setCategoryName(categoryName);
+            }
+            return commodityDto;
         }).collect(Collectors.toList());
         commodityDtoPage.setRecords(list);
         return R.success(commodityDtoPage);

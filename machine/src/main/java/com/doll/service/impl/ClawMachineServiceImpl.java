@@ -88,6 +88,7 @@ public class ClawMachineServiceImpl extends ServiceImpl<ClawMachineMapper, ClawM
         super.updateBatchById(clawMachineList);
     }
 
+
     @Override
     public R<Map>  getBeingChangedClawMachine(Long id){
         ClawMachine clawMachine=super.getById(id);

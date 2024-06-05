@@ -16,6 +16,7 @@ import org.springframework.web.HttpSessionRequiredException;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -30,16 +31,10 @@ public class UserController {
     @Autowired
     private RedisTemplate redisTemplate;
 
-    @PostMapping("/sendMsg")    //用来绑定手机号码
+    @PostMapping("/sendMsg")    //发送验证码
     public R<String> sendMsg(@RequestBody User user, HttpSession session){
         String phone=user.getPhone();
         if(!StringUtils.isEmpty(phone)){
-            LambdaQueryWrapper<User> queryWrapper=new LambdaQueryWrapper<>();
-            queryWrapper.eq(User::getPhone,phone);
-            int count=userService.count(queryWrapper);
-            if (count>0){                           //判断该手机是否被绑定
-                return R.error("该手机已经绑定了账户");
-            }
             String code= ValidateCodeUtils.generateValidateCode(6).toString();
             SMSUtils.sendMessage("瑞吉外卖","SMS_462260361",phone,code);
 //            session.setAttribute(phone,code);   //把验证码存放在session里
@@ -49,8 +44,15 @@ public class UserController {
         return R.error("短信发送失败");
     }
 
-    @PutMapping("/bind")
+    @PutMapping("/bind")   //绑定手机
     public R<String> bindPhone(@RequestBody UserDto user,HttpSession session){
+        LambdaQueryWrapper<User> queryWrapper=new LambdaQueryWrapper<>();
+        queryWrapper.eq(User::getPhone,user.getPhone());
+        int count=userService.count(queryWrapper);
+        if (count>0){                           //判断该手机是否被绑定
+            return R.error("该手机已经绑定了账户");
+        }
+
         user.setId(BaseContext.getCurrentId()); //实际用
 //        user.setId(1417012167126876162L); //测试用
         String phone=user.getPhone();
@@ -67,12 +69,33 @@ public class UserController {
 
 
     //登入功能没完成
-    @PostMapping("/login")
-    public R<User> login(){
-        User user =new User();
-        return R.success(user);
+    @PostMapping("/loginWithCode") //通过手机验证码登入
+    public R<User> login(@RequestBody Map map,HttpSession session){
+         String phone =map.get("phone").toString();
+         String code=map.get("code").toString();
+         Object codeInRedis=redisTemplate.opsForValue().get(phone);
+         if (codeInRedis !=null && codeInRedis.equals(code)){
+             LambdaQueryWrapper<User> queryWrapper =new LambdaQueryWrapper<>();
+             queryWrapper.eq(User::getPhone,phone);
+             User user=userService.getOne(queryWrapper);
+             if (user==null){
+                 user=new User();
+                 user.setPhone(phone);
+                 user.setStatus(1);
+                 user.setRegistrationTime(LocalDateTime.now());
+                 user.setLatestLoginTime(LocalDateTime.now());
+                 userService.save(user);
+             }
+             session.setAttribute("user",user.getId());
+             User user1=new User();
+             user1.setId(user.getId());
+             user1.setLatestLoginTime(LocalDateTime.now());
+             userService.updateById(user1);
+             redisTemplate.delete(phone);
+             user.setLatestLoginTime(LocalDateTime.now());
+             return R.success(user);
+         }
+         return R.error("登陆失败");
     }
-
-
 
 }
