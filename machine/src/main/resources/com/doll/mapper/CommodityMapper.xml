@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.doll.mapper.CommodityMapper">
+
+
+<!--    &lt;!&ndash;    Commodity getUserByName11(String name);&ndash;&gt;-->
+<!--    <select id="getUserByName11" resultType="com.doll.entity.Commodity">-->
+<!--        select * from commodity where name= '${name}'-->
+<!--    </select>-->
+
+<!--    DollOnPhoneDto getDollOnPhoneInformation(@Param("categoryId") Long categoryId );-->
+    <select id="getDollOnPhoneInformation" resultType="com.doll.dto.DollOnPhoneDto">
+        SELECT commodity.id commodityId ,commodity.`name` commodityName ,commodity.sort commoditySort ,commodity.price commodityPrice ,commodity.image  commodityImage,claw_machine.id clawMachineId ,claw_machine.sensor_id  clawMachineSensorId  ,claw_machine.controller_id  clawMachineControllerId ,claw_machine.camera_id  clawMachineCameraId
+        from claw_machine  INNER JOIN commodity  ON commodity.id=claw_machine.commodity_id WHERE commodity.`status`=1 AND claw_machine.`status`=1
+        <if test="categoryId != null">
+            AND commodity.category_id = #{categoryId}
+        </if>
+        <if test="dollName != null">
+            AND  commodity.`name` LIKE  CONCAT('%', #{dollName}, '%')
+        </if>
+
+        ORDER BY commoditySort ASC LIMIT #{offSet},#{pageSize}
+    </select>
+
+
+</mapper>

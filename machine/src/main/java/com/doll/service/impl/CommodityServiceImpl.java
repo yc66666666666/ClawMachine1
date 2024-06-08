@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.doll.common.CustomerException;
+import com.doll.dto.DollOnPhoneDto;
 import com.doll.entity.ClawMachine;
 import com.doll.entity.Commodity;
 import com.doll.mapper.CommodityMapper;
@@ -20,6 +21,9 @@ import java.util.stream.Collectors;
 
 @Service
 public class CommodityServiceImpl extends ServiceImpl<CommodityMapper, Commodity> implements CommodityService {
+
+    @Autowired
+    private CommodityMapper commodityMapper;
 
     @Autowired
     private ClawMachineService clawMachineService;
@@ -54,5 +58,10 @@ public class CommodityServiceImpl extends ServiceImpl<CommodityMapper, Commodity
             commodityList.add(commodity);
         }
         super.updateBatchById(commodityList);
+    }
+
+    @Override
+    public List<DollOnPhoneDto> getDollOnPhoneINF(String dollName,int offSet,int pageSize,Long categoryId) {
+        return commodityMapper.getDollOnPhoneInformation(dollName,offSet,pageSize,categoryId);
     }
 }

@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.doll.common.R;
 import com.doll.dto.CommodityDto;
+import com.doll.dto.DollOnPhoneDto;
 import com.doll.entity.Category;
 import com.doll.entity.ClawMachine;
 import com.doll.entity.Commodity;
@@ -80,26 +81,9 @@ public class CommodityController {
     //用户查询,name为娃娃的模糊名字，categoryId为娃娃的种类
 //    @Cacheable(value = "commodityCache",key = "'user_'+#page+'_'+#pageSize+'_'+#name",unless = "#result.data==null")
     @GetMapping("/pageUser")
-    public R<Page> pageUser(int page,int pageSize,String name,Long categoryId){
-
-        LambdaQueryWrapper<Commodity> queryWrapper=new LambdaQueryWrapper<>();
-//        queryWrapper.like(name!=null,Commodity::getName,name);
-        queryWrapper.eq(Commodity::getStatus,1);
-        queryWrapper.eq(categoryId!=null,Commodity::getCategoryId,categoryId);
-//        queryWrapper.orderByAsc(Commodity::getSort);
-        List<Commodity> commodityList =commodityService.list(queryWrapper);
-        List<Long> commodityIds=new ArrayList<>();
-        int len=commodityList.size();
-        for (int i=0;i<len;i++){
-           commodityIds.add(commodityList.get(i).getId());
-        }
-        Page<ClawMachine> page1=new Page<>(page,pageSize);
-        LambdaQueryWrapper<ClawMachine> queryWrapper1=new LambdaQueryWrapper<>();
-        queryWrapper1.eq(ClawMachine::getStatus,1);
-        queryWrapper1.in(ClawMachine::getCommodityId,commodityIds);
-        queryWrapper1.orderByAsc(ClawMachine::getSort);
-        clawMachineService.page(page1,queryWrapper1);
-        return R.success(page1);
+    public R<List<DollOnPhoneDto>> pageUser(String dollName,@RequestParam(value = "page" ,defaultValue = "1") int page,@RequestParam(value = "pageSize",defaultValue = "10") int pageSize,String name,Long categoryId){
+        List<DollOnPhoneDto> dollOnPhoneDtoList=  commodityService.getDollOnPhoneINF(dollName,(page-1)*pageSize,pageSize,categoryId);
+        return R.success(dollOnPhoneDtoList);
     }
 
     //Cacheable有数据则直接调用，如果没有将返回的数据放入缓存
