@@ -36,7 +36,7 @@ public class UserController {
         String phone=user.getPhone();
         if(!StringUtils.isEmpty(phone)){
             String code= ValidateCodeUtils.generateValidateCode(6).toString();
-            SMSUtils.sendMessage("瑞吉外卖","SMS_462260361",phone,code);
+            SMSUtils.sendMessage("泉州寰游科技","SMS_300165018",phone,code);
 //            session.setAttribute(phone,code);   //把验证码存放在session里
             redisTemplate.opsForValue().set(phone,code,5, TimeUnit.MINUTES);  //把验证码存放在redis里，有效期为5分钟
             return R.success("手机验证码发送成功");
