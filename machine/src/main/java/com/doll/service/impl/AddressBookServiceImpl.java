@@ -17,10 +17,10 @@ public class AddressBookServiceImpl extends ServiceImpl<AddressBookMapper, Addre
         Long id=addressBook.getId();
         LambdaQueryWrapper<AddressBook> queryWrapper=new LambdaQueryWrapper<>();
         queryWrapper.eq(AddressBook::getUserId, BaseContext.getCurrentId());
+        System.out.println("用户的iddddddddddd"+BaseContext.getCurrentId());
         addressBook.setIsDefault(0);
         addressBook.setId(null);
         super.update(addressBook,queryWrapper);
-
         addressBook.setIsDefault(1);
         addressBook.setId(id);
         super.updateById(addressBook);
