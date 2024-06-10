@@ -89,7 +89,7 @@ public class UserController {
              user1.setId(user.getId());
              user1.setLatestLoginTime(LocalDateTime.now());
              userService.updateById(user1);
-//             redisTemplate.delete(phone);
+//             redisTemplate.delete(phone);     //上线要加上
              user.setLatestLoginTime(LocalDateTime.now());
              return R.success(user);
          }
