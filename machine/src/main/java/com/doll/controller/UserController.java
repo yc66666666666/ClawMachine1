@@ -15,6 +15,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.HttpSessionRequiredException;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.time.LocalDateTime;
 import java.util.Map;
@@ -68,7 +69,7 @@ public class UserController {
 
 
     @PostMapping("/loginWithCode") //通过手机验证码登入
-    public R<User> login(@RequestBody Map map,HttpSession session){
+    public R<User> login(@RequestBody Map map, HttpServletRequest request){
          String phone =map.get("phone").toString();
          String code=map.get("code").toString();
          Object codeInRedis=redisTemplate.opsForValue().get(phone);
@@ -84,7 +85,7 @@ public class UserController {
                  user.setLatestLoginTime(LocalDateTime.now());
                  userService.save(user);
              }
-             session.setAttribute("user",user.getId());
+             request.getSession().setAttribute("user",user.getId());
              User user1=new User();
              user1.setId(user.getId());
              user1.setLatestLoginTime(LocalDateTime.now());
