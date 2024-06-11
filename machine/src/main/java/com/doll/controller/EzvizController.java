@@ -14,6 +14,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -76,7 +78,7 @@ public class EzvizController {
      * 获取摄像头实时直播地址和accessToken
      */
     @GetMapping("/ezviz/video")
-    public R<CameraResponse> getVideoUrlAndAccessToken(@RequestParam String deviceSerial, @RequestParam int channelNo) {
+    public R<CameraResponse> getVideoUrlAndAccessToken(@RequestParam String ApplicationType,@RequestParam String deviceSerial, @RequestParam int channelNo, @RequestParam(required = false) String videoType,@RequestParam(required = false) String startTime,@RequestParam(required = false)String endTime) {
 
         RestTemplate restTemplate1 = new RestTemplate();
         HttpHeaders headers1 = new HttpHeaders();
@@ -101,27 +103,43 @@ public class EzvizController {
         if (accessToken == null) {
             return R.error(accessTokenMSG);
         }
-        RestTemplate restTemplate = new RestTemplate();
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-        String body = String.format("accessToken=%s&deviceSerial=%s&channelNo=%d", accessToken, deviceSerial, channelNo);
-        HttpEntity<String> entity = new HttpEntity<>(body, headers);
-        ResponseEntity<String> response = restTemplate.exchange(VIDEO_URL, HttpMethod.POST, entity, String.class);
-        // 解析 JSON 字符串
-        JsonObject rootObject2 = JsonParser.parseString(response.getBody()).getAsJsonObject();
-        // 获取 data 节点
-        JsonObject dataObject2 = rootObject2.getAsJsonObject("data");
-        String urlMSG=rootObject2.get("msg").getAsString();
-        // 获取 url 的值
-        String url = dataObject2.get("url").getAsString();
-        if(url == null){
-            return R.error(urlMSG);
+
+         String url=null;    //视频链接
+        //如果是微信url要变
+        if (ApplicationType.equals("weiXin")) {
+            // 定义日期和时间的格式
+//            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+//            // 使用 formatter 将 startTime 格式化为 String
+//            String StartDateTime = startTime.format(formatter);
+//            // 使用 formatter 将 endTime 格式化为 String
+//            String EndDateTime = endTime.format(formatter);
+            url = String.format("rtmp://open.ys7.com/%s/%d/%s/%s/%s", deviceSerial, channelNo, videoType, startTime, endTime);
         }
+
+        if(ApplicationType.equals("H5")) {
+            RestTemplate restTemplate = new RestTemplate();
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+            String body = String.format("accessToken=%s&deviceSerial=%s&channelNo=%d", accessToken, deviceSerial, channelNo);
+            HttpEntity<String> entity = new HttpEntity<>(body, headers);
+            ResponseEntity<String> response = restTemplate.exchange(VIDEO_URL, HttpMethod.POST, entity, String.class);
+            // 解析 JSON 字符串
+            JsonObject rootObject2 = JsonParser.parseString(response.getBody()).getAsJsonObject();
+            // 获取 data 节点
+            JsonObject dataObject2 = rootObject2.getAsJsonObject("data");
+            String urlMSG = rootObject2.get("msg").getAsString();
+            // 获取 url 的值，H5的url
+            url = dataObject2.get("url").getAsString();
+
+            if (url == null) {
+                return R.error(urlMSG);
+            }
+        }
+
         CameraResponse cameraResponse=new CameraResponse();
         cameraResponse.setAccessToken(accessToken);
         cameraResponse.setUrl(url);
         return R.success(cameraResponse);
-
     }
 }
 

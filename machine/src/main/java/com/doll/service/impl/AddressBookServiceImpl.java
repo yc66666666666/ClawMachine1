@@ -22,7 +22,6 @@ public class AddressBookServiceImpl extends ServiceImpl<AddressBookMapper, Addre
         Long id=addressBook.getId();
         LambdaQueryWrapper<AddressBook> queryWrapper=new LambdaQueryWrapper<>();
         queryWrapper.eq(AddressBook::getUserId, addressBookMapper.selectById(id).getUserId());
-        System.out.println("用户的iddddddddddd"+addressBookMapper.selectById(id).getUserId());
         addressBook.setIsDefault(0);
         addressBook.setId(null);
         super.update(addressBook,queryWrapper);
