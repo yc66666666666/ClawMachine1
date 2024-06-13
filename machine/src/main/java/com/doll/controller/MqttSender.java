@@ -12,16 +12,29 @@ import org.springframework.stereotype.Service;
 //@Bean
 public class MqttSender {
 
-    private String brokerUrl="tcp://k15kaQk0k1P.iot-as-mqtt.cn-shanghai.aliyuncs.com:1883";
+//    private String brokerUrl="tcp://k15kaQk0k1P.iot-as-mqtt.cn-shanghai.aliyuncs.com:1883";
+//
+//
+//    private String clientId="k15kaQk0k1P.app_dev|securemode=2,signmethod=hmacsha256,timestamp=1713947416488|";
+//
+//
+//    private String username="app_dev&k15kaQk0k1P";
+//
+//
+//    private String password="b2075d52c53d782fe6cc003dc4356225f4ca41dae283af29704adacb988046e3";
 
+    //k1fjo6CPtMr为ProductKey
+    private String brokerUrl="tcp://k1fjo6CPtMr.iot-as-mqtt.cn-shanghai.aliyuncs.com:1883";
+//    private String brokerUrl="tcp://iot-06z00htcl0whfr4.mqtt.iothub.aliyuncs.com:1883";
 
-    private String clientId="k15kaQk0k1P.app_dev|securemode=2,signmethod=hmacsha256,timestamp=1713947416488|";
+    //MQTT连接参数里面的clientId
+    private String clientId="k1fjo6CPtMr.app_dev_1|securemode=2,signmethod=hmacsha256,timestamp=1718181222523|";
 
+    //MQTT连接参数里面的username
+    private String username="app_dev_1&k1fjo6CPtMr";
 
-    private String username="app_dev&k15kaQk0k1P";
-
-
-    private String password="b2075d52c53d782fe6cc003dc4356225f4ca41dae283af29704adacb988046e3";
+    //MQTT连接参数里面的passwd
+    private String password="c03994e75c583441f10cc6d1c09176e553c7bbec06394cae6258f3aef3eee865";
 
     private MqttClient client;
 

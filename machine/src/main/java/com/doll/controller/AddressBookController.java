@@ -26,11 +26,10 @@ public class AddressBookController {
     @PostMapping
     @Transactional
     public R<AddressBook> save(@RequestBody AddressBook addressBook){
-        addressBook.setUserId(BaseContext.getCurrentId());
         Integer isDefault=addressBook.getIsDefault();
         if (isDefault==1){
             LambdaUpdateWrapper<AddressBook> updateWrapper=new LambdaUpdateWrapper<>();
-             updateWrapper.set(AddressBook::getIsDefault,0).eq(AddressBook::getUserId,BaseContext.getCurrentId());
+             updateWrapper.set(AddressBook::getIsDefault,0).eq(AddressBook::getUserId,addressBook.getUserId());
             addressBookService.update(updateWrapper);
         }
         addressBookService.save(addressBook);
@@ -82,9 +81,10 @@ public class AddressBookController {
          Integer isDefault=addressBook.getIsDefault();
          if (isDefault==1){
              LambdaUpdateWrapper<AddressBook> updateWrapper=new LambdaUpdateWrapper<>();
-             updateWrapper.set(AddressBook::getIsDefault,0).eq(AddressBook::getUserId,BaseContext.getCurrentId());
+             updateWrapper.set(AddressBook::getIsDefault,0).eq(AddressBook::getUserId,addressBook.getUserId());
              addressBookService.update(updateWrapper);
          }
+         addressBook.setUserId(null);
         addressBookService.updateById(addressBook);
         return R.success("修改地址成功");
      }

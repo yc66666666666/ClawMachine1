@@ -19,6 +19,8 @@ public class LoginCheckFilter implements Filter {
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest request=(HttpServletRequest) servletRequest;
+
+
         HttpServletResponse response=(HttpServletResponse) servletResponse;
         String requestURI=request.getRequestURI();
         log.info("拦截到请求:{}",requestURI);
@@ -36,6 +38,8 @@ public class LoginCheckFilter implements Filter {
         if (check){
             log.info("本次请求{}不需要处理",requestURI);
             filterChain.doFilter(request,response);
+            BaseContext.setCurrentId((Long)request.getSession().getAttribute("employee"));
+            BaseContext.setCurrentId((Long)request.getSession().getAttribute("user"));
             return;
         }
 
@@ -43,6 +47,7 @@ public class LoginCheckFilter implements Filter {
         if (request.getSession().getAttribute("employee")!=null){
             log.info("管理员已经登入,用户id为{}",request.getSession().getAttribute("employee"));
             BaseContext.setCurrentId((Long)request.getSession().getAttribute("employee"));
+            System.out.println("在过滤器中employee的ID:"+request.getSession().getAttribute("employee"));
             filterChain.doFilter(request,response);
             return;
         }
@@ -51,6 +56,7 @@ public class LoginCheckFilter implements Filter {
         if (request.getSession().getAttribute("user")!=null){
             log.info("用户已经登入,用户id为{}",request.getSession().getAttribute("user"));
             BaseContext.setCurrentId((Long)request.getSession().getAttribute("user"));
+            System.out.println("在过滤器中user的ID:"+request.getSession().getAttribute("user"));
             filterChain.doFilter(request,response);
             return;
         }

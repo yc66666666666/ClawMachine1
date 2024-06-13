@@ -22,9 +22,11 @@ public class DataPublisher {
     @GetMapping("/move/{action}")
     public void sendTemperatureUpdate(@PathVariable Integer action) {
         try {
-            String topic = "/sys/k15kaQk0k1P/app_dev/thing/event/property/post";
-//            String payload = "{\"id\":\"1\",\"version\":\"1.0\",\"params\":{\"controlDoll\":2},\"method\":\"thing.event.property.post\"}";
+            String topic = "/sys/k1fjo6CPtMr/app_dev_1/thing/event/property/post";
+
             String payload = String.format("{\"id\":\"1\",\"version\":\"1.0\",\"params\":{\"controlDoll\":%d},\"method\":\"thing.event.property.post\"}", action);
+//            String payload = String.format("{\"id\":\"1\",\"params\":{\"control\":%d},\"version\":\"1.0\",:\"thing.event.property.post\"}", action);
+//            {"id":1718179085647,"params":{"control":1},"version":"1.0","method":"thing.event.property.post"}
             System.out.println(payload);
             if (count11==0){
                 mqttSender.connect();

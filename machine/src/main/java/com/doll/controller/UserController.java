@@ -69,7 +69,7 @@ public class UserController {
 
 
     @PostMapping("/loginWithCode") //通过手机验证码登入
-    public R<User> login(@RequestBody Map map, HttpServletRequest request){
+    public R<User> login(@RequestBody Map map, HttpSession session){
          String phone =map.get("phone").toString();
          String code=map.get("code").toString();
          Object codeInRedis=redisTemplate.opsForValue().get(phone);
@@ -85,13 +85,15 @@ public class UserController {
                  user.setLatestLoginTime(LocalDateTime.now());
                  userService.save(user);
              }
-             request.getSession().setAttribute("user",user.getId());
+             session.setAttribute("user",user.getId());
+             System.out.println("在登入入口，用户的id:"+user.getId());
              User user1=new User();
              user1.setId(user.getId());
              user1.setLatestLoginTime(LocalDateTime.now());
              userService.updateById(user1);
 //             redisTemplate.delete(phone);     //上线要加上
              user.setLatestLoginTime(LocalDateTime.now());
+             BaseContext.setCurrentId(user.getId());
              return R.success(user);
          }
          return R.error("登陆失败");
