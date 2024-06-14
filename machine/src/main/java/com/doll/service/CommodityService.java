@@ -12,4 +12,7 @@ public interface CommodityService extends IService<Commodity> {
 
     public List<DollOnPhoneDto> getDollOnPhoneINF(String dollName,int offSet,int pageSize, Long categoryId);
 
+    public Integer getDollOnPhoneNum(String dollName, Long categoryId);
+
+
 }

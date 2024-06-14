@@ -24,8 +24,8 @@ public class MqttSender {
 //    private String password="b2075d52c53d782fe6cc003dc4356225f4ca41dae283af29704adacb988046e3";
 
     //k1fjo6CPtMr为ProductKey
-    private String brokerUrl="tcp://k1fjo6CPtMr.iot-as-mqtt.cn-shanghai.aliyuncs.com:1883";
-//    private String brokerUrl="tcp://iot-06z00htcl0whfr4.mqtt.iothub.aliyuncs.com:1883";
+//    private String brokerUrl="tcp://k1fjo6CPtMr.iot-as-mqtt.cn-shanghai.aliyuncs.com:1883";
+    private String brokerUrl="tcp://iot-06z00htcl0whfr4.mqtt.iothub.aliyuncs.com:1883";
 
     //MQTT连接参数里面的clientId
     private String clientId="k1fjo6CPtMr.app_dev_1|securemode=2,signmethod=hmacsha256,timestamp=1718181222523|";

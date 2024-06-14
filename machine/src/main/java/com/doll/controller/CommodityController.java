@@ -81,9 +81,16 @@ public class CommodityController {
     //用户查询,name为娃娃的模糊名字，categoryId为娃娃的种类
 //    @Cacheable(value = "commodityCache",key = "'user_'+#page+'_'+#pageSize+'_'+#name",unless = "#result.data==null")
     @GetMapping("/pageUser")
-    public R<List<DollOnPhoneDto>> pageUser(String dollName,@RequestParam(value = "page" ,defaultValue = "1") int page,@RequestParam(value = "pageSize",defaultValue = "10") int pageSize,String name,Long categoryId){
+    public R<Page<DollOnPhoneDto>> pageUser(String dollName,@RequestParam(value = "page" ,defaultValue = "1") int page,@RequestParam(value = "pageSize",defaultValue = "10") int pageSize,String name,Long categoryId){
         List<DollOnPhoneDto> dollOnPhoneDtoList=  commodityService.getDollOnPhoneINF(dollName,(page-1)*pageSize,pageSize,categoryId);
-        return R.success(dollOnPhoneDtoList);
+        Page<DollOnPhoneDto> phoneDtoPage=new Page<>();
+        int TotalLen=commodityService.getDollOnPhoneNum(dollName, categoryId);
+        phoneDtoPage.setTotal(TotalLen);
+        phoneDtoPage.setSize(pageSize);
+        phoneDtoPage.setCurrent(page);
+        phoneDtoPage.setRecords(dollOnPhoneDtoList);
+        phoneDtoPage.setPages(TotalLen/pageSize);
+        return R.success(phoneDtoPage);
     }
 
     //Cacheable有数据则直接调用，如果没有将返回的数据放入缓存

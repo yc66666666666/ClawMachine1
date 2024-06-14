@@ -64,4 +64,9 @@ public class CommodityServiceImpl extends ServiceImpl<CommodityMapper, Commodity
     public List<DollOnPhoneDto> getDollOnPhoneINF(String dollName,int offSet,int pageSize,Long categoryId) {
         return commodityMapper.getDollOnPhoneInformation(dollName,offSet,pageSize,categoryId);
     }
+
+    @Override
+    public Integer getDollOnPhoneNum(String dollName, Long categoryId) {
+        return commodityMapper.getDollOnPhoneTotalCount(dollName,categoryId);
+    }
 }

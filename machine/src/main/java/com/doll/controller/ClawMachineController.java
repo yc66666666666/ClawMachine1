@@ -90,7 +90,7 @@ public class ClawMachineController {
 
 
 
-    @GetMapping("/page")
+    @GetMapping("/page") //管理端获得分页娃娃机
     public R<Page> pageR(int page,int pageSize,String name){
         Page<ClawMachine> page1=new Page<>(page,pageSize);
         Page<ClawMachineDto> page2=new Page<>();

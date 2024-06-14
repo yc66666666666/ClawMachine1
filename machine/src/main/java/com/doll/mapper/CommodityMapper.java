@@ -12,4 +12,7 @@ import java.util.List;
 public interface CommodityMapper extends BaseMapper<Commodity> {
 //       Commodity getUserByName11(String name);
        List<DollOnPhoneDto> getDollOnPhoneInformation(@Param("dollName") String dollName,  @Param("offSet") int offSet,@Param("pageSize") int pageSize,  @Param("categoryId") Long categoryId );
+
+
+       Integer getDollOnPhoneTotalCount(@Param("dollName") String dollName,  @Param("categoryId") Long categoryId );
 }

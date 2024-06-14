@@ -25,4 +25,20 @@
     </select>
 
 
+    <select id="getDollOnPhoneTotalCount" resultType="java.lang.Integer">
+        SELECT  count(*)   commodityNum
+        from claw_machine  INNER JOIN commodity  ON commodity.id=claw_machine.commodity_id WHERE commodity.`status`=1 AND claw_machine.`status`=1
+        <if test="categoryId != null">
+            AND commodity.category_id = #{categoryId}
+        </if>
+        <if test="dollName != null">
+            AND  commodity.`name` LIKE  CONCAT('%', #{dollName}, '%')
+        </if>
+    </select>
+
+
+
+
+
+
 </mapper>
