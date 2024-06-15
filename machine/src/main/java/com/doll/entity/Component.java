@@ -30,6 +30,15 @@ public class Component implements Serializable {
      //1表示已绑定，0表示未绑定，数据库默认为0
     private Integer status;
 
+    //摄像头通道数
+    private Integer channelNo;
+
+    //控制器客户端密码Id
+    private String clientId;
+
+    //控制器客户端密码
+    private String passwd;
+
 
     //顺序
     private Integer sort;

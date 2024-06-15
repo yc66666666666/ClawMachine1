@@ -25,34 +25,48 @@ public class MqttSender {
 
     //k1fjo6CPtMr为ProductKey
 //    private String brokerUrl="tcp://k1fjo6CPtMr.iot-as-mqtt.cn-shanghai.aliyuncs.com:1883";
-    private String brokerUrl="tcp://iot-06z00htcl0whfr4.mqtt.iothub.aliyuncs.com:1883";
 
-    //MQTT连接参数里面的clientId
-    private String clientId="k1fjo6CPtMr.app_dev_1|securemode=2,signmethod=hmacsha256,timestamp=1718181222523|";
 
-    //MQTT连接参数里面的username
-    private String username="app_dev_1&k1fjo6CPtMr";
 
-    //MQTT连接参数里面的passwd
-    private String password="c03994e75c583441f10cc6d1c09176e553c7bbec06394cae6258f3aef3eee865";
+//    private String brokerUrl="tcp://iot-06z00htcl0whfr4.mqtt.iothub.aliyuncs.com:1883";
+//
+//    //MQTT连接参数里面的clientId
+//    private String clientId="k1fjo6CPtMr.app_dev_1|securemode=2,signmethod=hmacsha256,timestamp=1718181222523|";
+//
+//    //MQTT连接参数里面的username
+//    private String username="app_dev_1&k1fjo6CPtMr";
+//
+//    //MQTT连接参数里面的passwd
+//    private String password="c03994e75c583441f10cc6d1c09176e553c7bbec06394cae6258f3aef3eee865";
+
+
+
+//    //MQTT连接参数里面的clientId
+//    private String clientId="k1fjo6CPtMr.app_dev_1|securemode=2,signmethod=hmacsha256,timestamp=1718181222523|";
+//
+//    //MQTT连接参数里面的username
+//    private String username="app_dev_1&k1fjo6CPtMr";
+//
+//    //MQTT连接参数里面的passwd
+//    private String password="c03994e75c583441f10cc6d1c09176e553c7bbec06394cae6258f3aef3eee865";
 
     private MqttClient client;
 
-    public void connect() throws MqttException {
+    public void connect(String clientId,String name ,String password,String brokerUrl) throws MqttException {
         if (client == null) {
             client = new MqttClient(brokerUrl, clientId);
         }
         MqttConnectOptions options = new MqttConnectOptions();
         options.setAutomaticReconnect(true);
         options.setCleanSession(true);
-        options.setUserName(username);
+        options.setUserName(name);
         options.setPassword(password.toCharArray());
         client.connect(options);
     }
 
-    public void publish(String topic, String payload) throws MqttException {
+    public void publish(String topic, String payload,String clientId,String name ,String password,String brokerUrl) throws MqttException {
         if (!client.isConnected()) {
-            connect();
+            connect(clientId,name ,password, brokerUrl);
         }
         MqttMessage message = new MqttMessage(payload.getBytes());
         message.setQos(1);

@@ -1,26 +1,31 @@
 package com.doll.controller;
 
+import com.doll.entity.Component;
+import com.doll.service.impl.ControllerServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RestController
-@RequestMapping("/publish")
-public class DataPublisher {
+@RequestMapping("/controller")
+public class ControllerController {
+
+//    @Autowired
+//    private MqttSender mqttSender;
 
     @Autowired
-    private MqttSender mqttSender;
+    private ControllerServiceImpl controllerService;
+
+    @Value("${mymqtt.brokerUrl}")
+    private String brokerUrl ;
 
     int count11=0;
 
-    @GetMapping("/move/{action}")
-    public void sendTemperatureUpdate(@PathVariable Integer action) {
+    @PostMapping("/move/{action}")
+    public void sendTemperatureUpdate(@PathVariable Integer action, @RequestBody Component component) {
         try {
             String topic = "/sys/k1fjo6CPtMr/app_dev_1/thing/event/property/post";
 
@@ -29,10 +34,10 @@ public class DataPublisher {
 //            {"id":1718179085647,"params":{"control":1},"version":"1.0","method":"thing.event.property.post"}
             System.out.println(payload);
             if (count11==0){
-                mqttSender.connect();
+                controllerService.connect(component.getClientId(), component.getName(),component.getPasswd(),brokerUrl);
                 count11=1;
             }
-            mqttSender.publish(topic, payload);
+            controllerService.publish(topic, payload,component.getClientId(), component.getName(),component.getPasswd(),brokerUrl);
         } catch (MqttException e) {
             e.printStackTrace();
         }
