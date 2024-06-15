@@ -22,6 +22,11 @@ public class ControllerController {
     @Value("${mymqtt.brokerUrl}")
     private String brokerUrl ;
 
+    @Value("${mymqtt.topic}")
+    String topic;
+
+
+
     int count11=0;
 
     @PostMapping("/move/{action}")
