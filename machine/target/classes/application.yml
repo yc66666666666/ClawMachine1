@@ -53,7 +53,7 @@ camera:
   APP_SECRET: c662cfa22c1edc6cef5c4766a42ebe7e
   ACCESS_TOKEN_URL: https://open.ys7.com/api/lapp/token/get
   VIDEO_URL: https://open.ys7.com/api/lapp/v2/live/address/get
-  
+
 #用于控制器
 mymqtt:
   brokerUrl: tcp://iot-06z00htcl0whfr4.mqtt.iothub.aliyuncs.com:1883

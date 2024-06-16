@@ -2,9 +2,13 @@ package com.doll.controller;
 
 import com.doll.common.R;
 import com.doll.dto.CameraResponse;
+import com.doll.entity.Component;
+import com.doll.service.CameraService;
+import com.doll.service.ComponentService;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -14,16 +18,16 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 @Slf4j
 @RestController
 @RequestMapping("/camera")
-public class EzvizController {
+public class CameraController {
 
+    @Autowired
+    private CameraService cameraService;
+
+    @Autowired
+    private ComponentService componentService;
 
     @Value("${camera.APP_KEY}")
     private  String APP_KEY ;
@@ -34,49 +38,65 @@ public class EzvizController {
     @Value("${camera.VIDEO_URL}")
     private  String VIDEO_URL;
 
-
-
-    @GetMapping("/ezviz/token")
-    public String getAccessToken() {
-        // 设置 RestTemplate 和 HTTP Headers
-        RestTemplate restTemplate = new RestTemplate();
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-
-        // 构造 POST 请求的主体数据
-        String body = String.format("appKey=%s&appSecret=%s", APP_KEY, APP_SECRET);
-        HttpEntity<String> entity = new HttpEntity<>(body, headers);
-
-        // 发送 POST 请求
-        ResponseEntity<String> response = restTemplate.exchange(
-                ACCESS_TOKEN_URL,
-                HttpMethod.POST,
-                entity,
-                String.class
-        );
-
-
-
-        // 解析 JSON 字符串
-        JsonObject rootObject = JsonParser.parseString(response.getBody()).getAsJsonObject();
-
-        // 获取 data 节点
-        JsonObject dataObject = rootObject.getAsJsonObject("data");
-
-        // 获取 accessToken 的值
-        String accessToken = dataObject.get("accessToken").getAsString();
-
-        // 输出 accessToken
-        System.out.println("Access Token: " + accessToken);
-
-
-        return response.getBody();
+    @GetMapping("/getWechatVideoUrlAndAccessTokenById/{cameraId}")
+    public R<CameraResponse> getWeChatVideoUrlAndAccessTokenById(@PathVariable Long cameraId,String videoType ){
+          Component camera=componentService.getById(cameraId);
+           return cameraService.getVideoUrlAndAccessToken("weiXin",camera.getName(),camera.getChannelNo(),videoType,null,null);
     }
 
+    @GetMapping("/getH5VideoUrlAndAccessTokenById/{cameraId}")
+    public R<CameraResponse> getH5VideoUrlAndAccessTokenById(@PathVariable Long cameraId ){
+        Component camera=componentService.getById(cameraId);
+        return cameraService.getVideoUrlAndAccessToken("H5",camera.getName(),camera.getChannelNo(),null,null,null);
+    }
+
+
+
+
+
+//    @GetMapping("/ezviz/token")
+//    public String getAccessToken() {
+//        // 设置 RestTemplate 和 HTTP Headers
+//        RestTemplate restTemplate = new RestTemplate();
+//        HttpHeaders headers = new HttpHeaders();
+//        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+//
+//        // 构造 POST 请求的主体数据
+//        String body = String.format("appKey=%s&appSecret=%s", APP_KEY, APP_SECRET);
+//        HttpEntity<String> entity = new HttpEntity<>(body, headers);
+//
+//        // 发送 POST 请求
+//        ResponseEntity<String> response = restTemplate.exchange(
+//                ACCESS_TOKEN_URL,
+//                HttpMethod.POST,
+//                entity,
+//                String.class
+//        );
+//
+//
+//
+//        // 解析 JSON 字符串
+//        JsonObject rootObject = JsonParser.parseString(response.getBody()).getAsJsonObject();
+//
+//        // 获取 data 节点
+//        JsonObject dataObject = rootObject.getAsJsonObject("data");
+//
+//        // 获取 accessToken 的值
+//        String accessToken = dataObject.get("accessToken").getAsString();
+//
+//        // 输出 accessToken
+//        System.out.println("Access Token: " + accessToken);
+//
+//
+//        return response.getBody();
+//    }
+//
 
     /**
      * 获取摄像头实时直播地址和accessToken
      */
+
+
     @GetMapping("/ezviz/video")
     public R<CameraResponse> getVideoUrlAndAccessToken(@RequestParam String ApplicationType,@RequestParam String deviceSerial, @RequestParam int channelNo, @RequestParam(required = false) String videoType,@RequestParam(required = false) String startTime,@RequestParam(required = false)String endTime) {
 

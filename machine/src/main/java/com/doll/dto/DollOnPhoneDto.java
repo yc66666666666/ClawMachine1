@@ -15,6 +15,8 @@ public class DollOnPhoneDto implements Serializable {
    private Integer commoditySort ;
    //抓取所耗金币
    private BigDecimal commodityPrice ;
+   //娃娃可换金币
+   private BigDecimal  commodityValue ;
    //商品图片
    private String commodityImage ;
    //娃娃机id

@@ -12,7 +12,7 @@
 
 <!--    DollOnPhoneDto getDollOnPhoneInformation(@Param("categoryId") Long categoryId );-->
     <select id="getDollOnPhoneInformation" resultType="com.doll.dto.DollOnPhoneDto">
-        SELECT commodity.id commodityId ,commodity.`name` commodityName ,commodity.sort commoditySort ,commodity.price commodityPrice ,commodity.image  commodityImage,claw_machine.id clawMachineId ,claw_machine.sensor_id  clawMachineSensorId  ,claw_machine.controller_id  clawMachineControllerId ,claw_machine.camera_id  clawMachineCameraId
+        SELECT commodity.id commodityId ,commodity.`name` commodityName ,commodity.sort commoditySort ,commodity.price commodityPrice ,commodity.`value`  commodityValue,commodity.image  commodityImage,claw_machine.id clawMachineId ,claw_machine.sensor_id  clawMachineSensorId  ,claw_machine.controller_id  clawMachineControllerId ,claw_machine.camera_id  clawMachineCameraId
         from claw_machine  INNER JOIN commodity  ON commodity.id=claw_machine.commodity_id WHERE commodity.`status`=1 AND claw_machine.`status`=1
         <if test="categoryId != null">
             AND commodity.category_id = #{categoryId}

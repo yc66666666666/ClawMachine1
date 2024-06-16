@@ -32,6 +32,18 @@ public class UserController {
     @Autowired
     private RedisTemplate redisTemplate;
 
+    //扣除玩娃娃机所需金币
+    @GetMapping("/deductCoin")
+    public R<String>  deductCoin(Long userId, Integer commodityPrice){
+        User user=new User();
+        user.setId(userId);
+        user.setCoin(userService.getById(userId).getCoin()-commodityPrice);
+        userService.updateById(user);
+        return R.success("扣除金币成功");
+    }
+
+
+
     @PostMapping("/sendMsg")    //发送验证码
     public R<String> sendMsg(@RequestBody User user, HttpSession session){
         String phone=user.getPhone();
