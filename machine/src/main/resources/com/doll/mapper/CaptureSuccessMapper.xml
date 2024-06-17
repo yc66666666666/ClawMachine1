@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.doll.mapper.CaptureSuccessMapper">
+
+
+
+<!--    List<GodRankingDto> getGodRanking(@Param("size") Integer size);-->
+    <select id="getGodRanking" resultType="com.doll.dto.GodRankingDto">
+
+        SELECT `user`.avatar,`user`.nickname,counttable.dollCount
+        FROM
+        (SELECT user_id  userId , COUNT(*)  dollCount
+        FROM capture_success
+        WHERE claw_time &gt;= DATE_SUB(DATE_SUB(CURDATE(), INTERVAL WEEKDAY(CURDATE()) DAY), INTERVAL 7 DAY)
+        AND claw_time &lt; DATE_SUB(DATE_SUB(CURDATE(), INTERVAL WEEKDAY(CURDATE()) - 7 DAY), INTERVAL 7 DAY)  AND is_success=1
+        GROUP BY user_id
+        LIMIT #{size} )  counttable INNER JOIN `user` ON counttable.userId=`user`.id  ORDER BY dollCount DESC
+    </select>
+
+<!--    List<GodRankingDto> getLivingGodRanking(@Param("size") Integer size);-->
+    <select id="getLivingGodRanking" resultType="com.doll.dto.GodRankingDto">
+        SELECT `user`.avatar,`user`.nickname,counttable.dollCount
+        FROM
+        (SELECT user_id  userId , COUNT(*)  dollCount
+        FROM capture_success
+        WHERE claw_time &gt;= DATE_SUB(CURDATE(), INTERVAL WEEKDAY(CURDATE()) DAY)
+        AND claw_time &lt;= NOW()  AND is_success=1
+        GROUP BY user_id
+        LIMIT #{size} )  counttable INNER JOIN `user` ON counttable.userId=`user`.id  ORDER BY dollCount DESC
+    </select>
+
+
+
+
+</mapper>
