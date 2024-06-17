@@ -1,12 +1,17 @@
 package com.doll.controller;
 
+import com.alibaba.druid.util.StringUtils;
 import com.doll.entity.Component;
+import com.doll.service.ComponentService;
 import com.doll.service.impl.ControllerServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Objects;
 
 @Slf4j
 @RestController
@@ -19,18 +24,30 @@ public class ControllerController {
     @Autowired
     private ControllerServiceImpl controllerService;
 
+    @Autowired
+    private ComponentService componentService;
+
     @Value("${mymqtt.brokerUrl}")
     private String brokerUrl ;
 
     @Value("${mymqtt.topic}")
     String topic;
 
-
+    @Autowired
+    private RedisTemplate redisTemplate;
 
     int count11=0;
 
     @PostMapping("/move/{action}")
-    public void sendTemperatureUpdate(@PathVariable Integer action, @RequestBody Component component) {
+    public void sendTemperatureUpdate(@PathVariable Integer action,Long clawMachineControllerId) {
+
+        Component component=(Component) redisTemplate.opsForValue().get("tomovie"+clawMachineControllerId);
+
+        if (Objects.isNull(component)){
+            component=componentService.getById(clawMachineControllerId);
+            redisTemplate.opsForValue().set("tomovie"+clawMachineControllerId,component);
+        }
+
         try {
             String topic = "/sys/k1fjo6CPtMr/app_dev_1/thing/event/property/post";
 

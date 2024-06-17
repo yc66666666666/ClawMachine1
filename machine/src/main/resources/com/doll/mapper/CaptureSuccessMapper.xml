@@ -32,6 +32,20 @@
     </select>
 
 
+<!--    List<ClawRecordDto> getGameRecord(@Param("userId") Long userId);-->
+    <select id="getGameRecord" resultType="com.doll.dto.ClawRecordDto">
+        SELECT   capture_success.id  , commodity.`name` commodityName ,commodity.image commodityImage,
+                 capture_success.claw_time clawTime,capture_success.is_success isSuccess
+        FROM capture_success LEFT JOIN commodity ON capture_success.commodity_id=commodity.id
+        WHERE capture_success.user_id=#{userId}
+    </select>
+
+
+
+
+
+
+
 
 
 </mapper>

@@ -1,6 +1,7 @@
 package com.doll.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.doll.dto.ClawRecordDto;
 import com.doll.dto.GodRankingDto;
 import com.doll.entity.CaptureSuccess;
 import com.doll.mapper.CaptureSuccessMapper;
@@ -33,5 +34,10 @@ public class CaptureSuccessServiceImpl extends ServiceImpl<CaptureSuccessMapper,
             godRankingDto.setNickname(PrivacyProtectionUtils.anonymizeNickname(godRankingDto.getNickname()));
         }
         return LivinggodRankingDtoList;
+    }
+
+    @Override
+    public List<ClawRecordDto> getGameRecord(Long userId) {
+        return captureSuccessMapper.getGameRecord(userId);
     }
 }

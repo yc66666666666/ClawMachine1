@@ -3,6 +3,7 @@ package com.doll.controller;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.doll.common.R;
+import com.doll.dto.ClawRecordDto;
 import com.doll.dto.GodRankingDto;
 import com.doll.entity.CaptureSuccess;
 import com.doll.service.CaptureSuccessService;
@@ -10,9 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -42,13 +41,25 @@ public class CaptureSuccessController {
         page.setTotal(length);
         return R.success(page);
     }
-     @GetMapping("/getGameRecording")
-    public R<List<CaptureSuccess>> getGameRecords(Long userId){
-        LambdaQueryWrapper<CaptureSuccess> queryWrapper=new LambdaQueryWrapper<>();
-        queryWrapper.eq(CaptureSuccess::getUserId,userId);
-        List<CaptureSuccess> gameRecordList=captureSuccessService.list(queryWrapper);
-        return R.success(gameRecordList);
+     @GetMapping("/getGameRecording")  //通过用户id获得用户游戏记录
+    public R<List<ClawRecordDto>> getGameRecords(Long userId){
+        return R.success(captureSuccessService.getGameRecord(userId));
     }
+    @PostMapping   //添加游戏记录，返回游戏记录id
+    public R<Long> saveRecord(@RequestBody CaptureSuccess captureSuccess){
+        captureSuccessService.save(captureSuccess);
+        return R.success(captureSuccess.getId());
+    }
+
+    @GetMapping("/changeToSuccess")
+    public R<String> changeToSuccess(Long recordId){
+        CaptureSuccess captureSuccess=new CaptureSuccess();
+        captureSuccess.setIsSuccess(1);
+        captureSuccess.setId(recordId);
+        captureSuccessService.updateById(captureSuccess);
+        return R.success("成功");
+    }
+
 
 
 
