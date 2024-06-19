@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.doll.mapper.FavoriteMapper">
+
+
+
+<!--&lt;!&ndash;    List<FavoriteDto> getFavoritesByUserId(@Param("userId") Long userId);&ndash;&gt;-->
+<!--    <select id="getFavoritesByUserId" resultType="com.doll.dto.FavoriteDto">-->
+<!--        SELECT commodity.image commodityImage ,commodity.`name` commodityName,commodity.price commodityPrice,commodity.id commodityId FROM favorite-->
+<!--            INNER  JOIN commodity ON favorite.commodity_id=commodity.id  WHERE user_id=  #{userId}-->
+<!--    </select>-->
+
+
+    <!--    DollOnPhoneDto getDollOnPhoneInformation(@Param("categoryId") Long categoryId );-->
+    <select id="getFavoritesByUserId" resultType="com.doll.dto.DollOnPhoneDto">
+        SELECT commodity.id commodityId ,commodity.`name` commodityName ,commodity.sort commoditySort ,commodity.price commodityPrice ,
+               commodity.`value`  commodityValue,
+               commodity.image  commodityImage,claw_machine.id clawMachineId ,claw_machine.sensor_id  clawMachineSensorId
+                ,claw_machine.controller_id  clawMachineControllerId ,claw_machine.camera_id  clawMachineCameraId
+        from claw_machine  INNER JOIN commodity  ON commodity.id=claw_machine.commodity_id WHERE commodity.`status`=1 AND claw_machine.`status`=1 AND
+        commodity.id in(
+             SELECT  DISTINCT(commodity_id)   FROM favorite WHERE user_id = #{userId}
+                    )
+    </select>
+
+
+</mapper>

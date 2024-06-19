@@ -3,9 +3,12 @@ package com.doll.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.doll.common.BaseContext;
+import com.doll.dto.DollOnPhoneDto;
+import com.doll.dto.FavoriteDto;
 import com.doll.entity.Favorite;
 import com.doll.mapper.FavoriteMapper;
 import com.doll.service.FavoriteService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
@@ -14,6 +17,10 @@ import java.util.stream.Collectors;
 
 @Service
 public class FavoriteServiceImpl extends ServiceImpl<FavoriteMapper, Favorite> implements FavoriteService {
+
+    @Autowired
+    private FavoriteMapper favoriteMapper;
+
     @Override
     public void removeByIds1(String ids) {
         List<Long> idList= Arrays.stream(ids.split(",")).map(Long::parseLong).collect(Collectors.toList());
@@ -23,5 +30,10 @@ public class FavoriteServiceImpl extends ServiceImpl<FavoriteMapper, Favorite> i
         queryWrapper.in(Favorite::getId,idList);
 //        super.removeByIds(queryWrapper,idList);
         super.remove(queryWrapper);
+    }
+
+    @Override
+    public List<DollOnPhoneDto> getFavoritesByUserId(Long userId) {
+        return  favoriteMapper.getFavoritesByUserId(userId);
     }
 }
