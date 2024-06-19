@@ -38,8 +38,11 @@ public class FavoriteController {
     }
 
     @DeleteMapping
-    public R<String> delete(String ids){
-        favoriteService.removeByIds1(ids);
+    public R<String> delete(Long userId ,Long commodityId){
+        LambdaQueryWrapper<Favorite> queryWrapper=new LambdaQueryWrapper<>();
+        queryWrapper.eq(Favorite::getCommodityId,commodityId);
+        queryWrapper.eq(Favorite::getUserId,userId);
+        favoriteService.remove(queryWrapper);
         return R.success("移除收藏成功");
     }
     @GetMapping("/list")
