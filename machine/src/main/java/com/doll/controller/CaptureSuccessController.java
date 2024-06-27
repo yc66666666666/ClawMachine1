@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.doll.common.R;
 import com.doll.dto.ClawRecordDto;
+import com.doll.dto.ExchangeToGoldDto;
 import com.doll.dto.GodRankingDto;
 import com.doll.entity.CaptureSuccess;
 import com.doll.service.CaptureSuccessService;
@@ -59,6 +60,18 @@ public class CaptureSuccessController {
         captureSuccessService.updateById(captureSuccess);
         return R.success("成功");
     }
+
+    @GetMapping("/changeToCoin")
+    public R<Page<ExchangeToGoldDto>>  exchangeCoin(Long userId, int status){
+        List<ExchangeToGoldDto> exchangeToGoldDtoList=  captureSuccessService.exchangeCoin(userId,status);
+        Page<ExchangeToGoldDto> page=new Page<>(0,0);
+        page.setRecords(exchangeToGoldDtoList);
+        page.setPages(1);
+        page.setCurrent(0);
+        page.setTotal(exchangeToGoldDtoList.size());
+        return R.success(page);
+    }
+
 
 
 

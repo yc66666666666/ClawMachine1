@@ -2,6 +2,7 @@ package com.doll.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.doll.dto.ClawRecordDto;
+import com.doll.dto.ExchangeToGoldDto;
 import com.doll.dto.GodRankingDto;
 import com.doll.entity.CaptureSuccess;
 import com.doll.mapper.CaptureSuccessMapper;
@@ -39,5 +40,10 @@ public class CaptureSuccessServiceImpl extends ServiceImpl<CaptureSuccessMapper,
     @Override
     public List<ClawRecordDto> getGameRecord(Long userId) {
         return captureSuccessMapper.getGameRecord(userId);
+    }
+
+    @Override
+    public List<ExchangeToGoldDto> exchangeCoin(Long userId, int status) {
+        return captureSuccessMapper.exchangeCoin(userId,status);
     }
 }

@@ -41,6 +41,16 @@
     </select>
 
 
+<!--    List<ExchangeToGoldDto> exchangeCoin(@Param("userId") Long userId,@Param("status") int status);-->
+
+    <select id="exchangeCoin" resultType="com.doll.dto.ExchangeToGoldDto">
+        SELECT  capture_success.commodity_id  commodityId , commodity.`name` commodityName  ,capture_success.claw_time  clawTime
+             ,DATE_ADD(capture_success.claw_time,INTERVAL  1 MONTH) endTime ,commodity.`value` commodityValue
+        FROM capture_success LEFT JOIN commodity ON capture_success.commodity_id=commodity.id
+        WHERE capture_success.user_id=#{userId} and capture_success.is_success=1 AND capture_success.`status`=#{status}
+    </select>
+
+
 
 
 
