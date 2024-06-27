@@ -5,18 +5,30 @@
     <meta charset="UTF-8">
     <title>Robot Control Panel</title>
     <script>
-        function sendCommand(command) {
-            fetch(`/publish/move/${command}`)
-                .then(response => response.text())
-                // .then(data => alert(data))
+
+        function sendCommand(action, clawMachineControllerId) {
+            fetch(`/controller/move/${action}`, {
+                method: 'POST', // 指定请求方法为 POST
+                headers: {
+                    'Content-Type': 'application/json' // 设置请求头，表示发送 JSON 数据
+                },
+                body: JSON.stringify({
+                    clawMachineControllerId: "1779334287712178177"
+                }) // 将 clawMachineControllerId 作为请求体发送
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.text();
+                })
+                .then(data => console.log('Success:', data))
                 .catch(error => console.error('Error:', error));
         }
-        // function grab() {
-        //     fetch('/grab')
-        //         .then(response => response.text())
-        //         .then(data => alert(data))
-        //         .catch(error => console.error('Error:', error));
-        // }
+
+
+
+
     </script>
 </head>
 <body>
@@ -26,5 +38,6 @@
 <button onclick="sendCommand('3')">Left</button>
 <button onclick="sendCommand('4')">Right</button>
 <button onclick="sendCommand('5')">Grab</button>
+
 </body>
 </html>

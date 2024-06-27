@@ -57,7 +57,7 @@ camera:
 #用于控制器
 mymqtt:
   brokerUrl: tcp://iot-06z00htcl0whfr4.mqtt.iothub.aliyuncs.com:1883
-  topic: /sys/k1fjo6CPtMr/app_dev_1/thing/event/property/post
+#  topic: /sys/k1fjo6CPtMr/app_dev_3/thing/event/property/post
 
 
 

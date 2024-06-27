@@ -51,11 +51,11 @@ public class CaptureSuccessController {
         return R.success(captureSuccess.getId());
     }
 
-    @GetMapping("/changeToSuccess")
-    public R<String> changeToSuccess(Long recordId){
-        CaptureSuccess captureSuccess=new CaptureSuccess();
-        captureSuccess.setIsSuccess(1);
-        captureSuccess.setId(recordId);
+    @PutMapping("/changeStatus")
+    public R<String> changeToSuccess(@RequestBody CaptureSuccess captureSuccess){
+        captureSuccess.setIsSuccess(captureSuccess.getStatus());
+        captureSuccess.setId(captureSuccess.getId());
+        captureSuccess.setStatus(null);
         captureSuccessService.updateById(captureSuccess);
         return R.success("成功");
     }

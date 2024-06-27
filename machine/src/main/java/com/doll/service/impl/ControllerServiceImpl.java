@@ -4,33 +4,55 @@ import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
+import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 import org.springframework.stereotype.Service;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 public class ControllerServiceImpl {
 
-    private MqttClient client;
+//    private MqttClient client;
+
+    private Map<String, MqttClient> clientMap=new HashMap<>();
 
     public void connect(String clientId,String name ,String password,String brokerUrl) throws MqttException {
-        if (client == null) {
-            client = new MqttClient(brokerUrl, clientId);
+        MqttClient client1=clientMap.get(name);
+        if (client1 == null) {
+            client1 = new MqttClient(brokerUrl, clientId,new MemoryPersistence());
+            MqttConnectOptions options = new MqttConnectOptions();
+            options.setAutomaticReconnect(true);
+            options.setCleanSession(true);
+            options.setUserName(name);
+            options.setPassword(password.toCharArray());
+            client1.connect(options);
+            clientMap.put(name,client1);
         }
-        MqttConnectOptions options = new MqttConnectOptions();
-        options.setAutomaticReconnect(true);
-        options.setCleanSession(true);
-        options.setUserName(name);
-        options.setPassword(password.toCharArray());
-        client.connect(options);
+
     }
 
     public void publish(String topic, String payload,String clientId,String name ,String password,String brokerUrl) throws MqttException {
-        if (!client.isConnected()) {
+        if (!clientMap.get(name).isConnected() || clientMap.get(name) == null) {
             connect(clientId,name ,password, brokerUrl);
         }
         MqttMessage message = new MqttMessage(payload.getBytes());
         message.setQos(1);
-        client.publish(topic, message);
+        clientMap.get(name).publish(topic, message);
+//        client.close();
     }
+
+
+    public String disconnect(String name) throws MqttException {
+        MqttClient client1=clientMap.get(name);
+        if (client1!=null){
+            client1.disconnect();
+            clientMap.remove(name);
+        }
+        return "断开成功";
+    }
+
+
 
 
 }
