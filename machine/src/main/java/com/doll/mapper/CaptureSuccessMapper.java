@@ -20,7 +20,7 @@ public interface CaptureSuccessMapper extends BaseMapper<CaptureSuccess> {
     List<ClawRecordDto> getGameRecord(@Param("userId") Long userId);
 
 
-    List<ExchangeToGoldDto> exchangeCoin(@Param("userId") Long userId,@Param("status") int status);
+    List<ExchangeToGoldDto> exchangeCoin(@Param("userId") Long userId,@Param("status") int status,@Param("offset") int offset,@Param("pageSize") int pageSize);
 
-
+    Integer getMyDollCount(@Param("userId") Long userId,@Param("status") int status);
 }

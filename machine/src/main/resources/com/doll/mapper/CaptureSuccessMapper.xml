@@ -41,14 +41,26 @@
     </select>
 
 
-<!--    List<ExchangeToGoldDto> exchangeCoin(@Param("userId") Long userId,@Param("status") int status);-->
 
+<!--    List<ExchangeToGoldDto> exchangeCoin(@Param("userId") Long userId,@Param("status") int status,@Param("offset") int offset,@Param("pageSize") int pageSize);-->
     <select id="exchangeCoin" resultType="com.doll.dto.ExchangeToGoldDto">
-        SELECT  capture_success.commodity_id  commodityId , commodity.`name` commodityName  ,capture_success.claw_time  clawTime
+        SELECT  capture_success.id  captureRecordId , commodity.image commodityImage, commodity.`name` commodityName  ,capture_success.claw_time  clawTime
              ,DATE_ADD(capture_success.claw_time,INTERVAL  1 MONTH) endTime ,commodity.`value` commodityValue
         FROM capture_success LEFT JOIN commodity ON capture_success.commodity_id=commodity.id
-        WHERE capture_success.user_id=#{userId} and capture_success.is_success=1 AND capture_success.`status`=#{status}
+        WHERE capture_success.user_id=#{userId} and capture_success.is_success=1 AND capture_success.`status`=#{status}  LIMIT #{offset},#{pageSize}
     </select>
+
+
+    <!--    Integer getMyDollCount(@Param("userId") Long userId,@Param("status") int status);-->
+    <select id="getMyDollCount" resultType="java.lang.Integer">
+        SELECT  count(*)
+        FROM capture_success LEFT JOIN commodity ON capture_success.commodity_id=commodity.id
+        WHERE capture_success.user_id=#{userId} and capture_success.is_success=1 AND capture_success.`status`=#{status}
+
+    </select>
+
+
+
 
 
 

@@ -43,6 +43,25 @@ public class ControllerServiceImpl {
     }
 
 
+    //接受来自设备的信号
+    public void subscribe(String topic1 ,String clientId,String name ,String password,String brokerUrl) throws MqttException {
+        if (!clientMap.get(name).isConnected() || clientMap.get(name) == null) {
+            connect(clientId,name ,password, brokerUrl);
+        }
+
+        clientMap.get(name).subscribe(
+                topic1, (receivedTopic, message) -> {
+                    System.out.println(String.format("1111111111111111111111topic:{},message:{}",receivedTopic,new String(message.getPayload())));
+                }
+        );
+
+    }
+
+
+
+
+
+
     public String disconnect(String name) throws MqttException {
         MqttClient client1=clientMap.get(name);
         if (client1!=null){

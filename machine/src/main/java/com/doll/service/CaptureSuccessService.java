@@ -14,6 +14,7 @@ public interface CaptureSuccessService extends IService<CaptureSuccess> {
     List<GodRankingDto> getGodRanking(Integer size);
     List<GodRankingDto> getLivingGodRanking(Integer size);
     List<ClawRecordDto> getGameRecord(Long userId);
+    List<ExchangeToGoldDto> exchangeCoin(Long userId,  int status,int offset,int pageSize);
 
-    List<ExchangeToGoldDto> exchangeCoin(Long userId,  int status);
+    Integer getMyDollCount( Long userId,int status);
 }

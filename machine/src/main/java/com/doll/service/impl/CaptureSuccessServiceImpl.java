@@ -43,7 +43,12 @@ public class CaptureSuccessServiceImpl extends ServiceImpl<CaptureSuccessMapper,
     }
 
     @Override
-    public List<ExchangeToGoldDto> exchangeCoin(Long userId, int status) {
-        return captureSuccessMapper.exchangeCoin(userId,status);
+    public List<ExchangeToGoldDto> exchangeCoin(Long userId, int status ,int offset,int pageSize) {
+        return captureSuccessMapper.exchangeCoin(userId,status,offset,pageSize);
+    }
+
+    @Override
+    public Integer getMyDollCount(Long userId, int status) {
+        return captureSuccessMapper.getMyDollCount(userId,status);
     }
 }

@@ -68,6 +68,13 @@ public class ControllerController {
 //                count11=1;
 //            }
             controllerService.publish(topic, payload,component.getClientId(), component.getName(),component.getPasswd(),brokerUrl);
+
+            if (action==5){   //这个是新填的
+                String topic1="/sys/k1fjo6CPtMr/app_dev_1/thing/service/property/set";
+                controllerService.subscribe(topic1,component.getClientId(), component.getName(),component.getPasswd(),brokerUrl);
+            }
+
+
         } catch (MqttException e) {
             e.printStackTrace();
         }

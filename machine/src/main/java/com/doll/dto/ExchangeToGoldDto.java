@@ -10,9 +10,11 @@ public class ExchangeToGoldDto  implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private Long commodityId ;    //商品id
+    private Long   captureRecordId ;    //抓取记录id
 
     private String  commodityName  ;  //商品名称
+
+    private String  commodityImage ; //图片名称
 
     private LocalDateTime clawTime ;  //抓取时间
 

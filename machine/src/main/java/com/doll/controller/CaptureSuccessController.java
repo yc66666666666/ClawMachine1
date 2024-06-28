@@ -7,11 +7,16 @@ import com.doll.dto.ClawRecordDto;
 import com.doll.dto.ExchangeToGoldDto;
 import com.doll.dto.GodRankingDto;
 import com.doll.entity.CaptureSuccess;
+import com.doll.entity.Commodity;
+import com.doll.entity.User;
 import com.doll.service.CaptureSuccessService;
+import com.doll.service.CommodityService;
+import com.doll.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,6 +27,12 @@ import java.util.List;
 public class CaptureSuccessController {
     @Autowired
     private CaptureSuccessService captureSuccessService;
+
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private CommodityService commodityService;
 
     @GetMapping("/getGodRanking")  //获得上周大神榜
      public R<Page<GodRankingDto>>  getGodRanking(){
@@ -62,15 +73,37 @@ public class CaptureSuccessController {
     }
 
     @GetMapping("/changeToCoin")
-    public R<Page<ExchangeToGoldDto>>  exchangeCoin(Long userId, int status){
-        List<ExchangeToGoldDto> exchangeToGoldDtoList=  captureSuccessService.exchangeCoin(userId,status);
-        Page<ExchangeToGoldDto> page=new Page<>(0,0);
-        page.setRecords(exchangeToGoldDtoList);
-        page.setPages(1);
-        page.setCurrent(0);
-        page.setTotal(exchangeToGoldDtoList.size());
-        return R.success(page);
+    public R<Page<ExchangeToGoldDto>>  exchangeCoin(Long userId, int status,@RequestParam(defaultValue = "1") int page,@RequestParam(defaultValue = "10") int pageSize){
+        List<ExchangeToGoldDto> exchangeToGoldDtoList=  captureSuccessService.exchangeCoin(userId,status,(page-1)*pageSize,pageSize);
+        int total=captureSuccessService.getMyDollCount(userId,status);
+        Page<ExchangeToGoldDto> page1=new Page<>(page,pageSize);
+        page1.setRecords(exchangeToGoldDtoList);
+        page1.setTotal(total);
+        page1.setPages((long) Math.ceil((float)total/pageSize));
+        return R.success(page1);
     }
+
+
+    @PutMapping("/changeStatusAndCoin")
+    @Transactional
+    public R<String> changeStatus(Long captureRecordId){    //修改抓取记录的status,给用户加金币
+        CaptureSuccess captureSuccess=captureSuccessService.getById(captureRecordId);
+        Long userId=captureSuccess.getUserId();
+        Commodity commodity= commodityService.getById(captureSuccess.getCommodityId());
+        Integer value=commodity.getValue().intValue();
+        CaptureSuccess captureSuccess1=new CaptureSuccess();
+        captureSuccess1.setId(captureRecordId);
+        captureSuccess1.setStatus(0);
+        User user=new User();
+        user.setId(userId);
+        user.setCoin(userService.getById(userId).getCoin()+value);
+        userService.updateById(user);
+        captureSuccessService.updateById(captureSuccess1);
+        return R.success("修改完成");
+    }
+
+
+
 
 
 
