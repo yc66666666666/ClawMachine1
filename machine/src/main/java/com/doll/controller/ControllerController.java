@@ -48,13 +48,11 @@ public class ControllerController {
 
 
         Component component=(Component) redisTemplate.opsForValue().get("tomovie"+clawMachineControllerId);
-        String topic =  String.format("/sys/k1fjo6CPtMr/%s/thing/event/property/post",component.getName().split("&")[0]);
-
         if (Objects.isNull(component)){
             component=componentService.getById(clawMachineControllerId);
             redisTemplate.opsForValue().set("tomovie"+clawMachineControllerId,component);
         }
-
+        String topic =  String.format("/sys/k1fjo6CPtMr/%s/thing/event/property/post",component.getName().split("&")[0]);
         try {
 //            String topic = "/sys/k1fjo6CPtMr/app_dev_3/thing/event/property/post";
 //            String topic =  String.format("/sys/k1fjo6CPtMr/%s/thing/event/property/post",component.getName().split("&")[0]);
