@@ -3,6 +3,7 @@ package com.doll.controller;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.doll.common.R;
+import com.doll.dto.CapatureRecordIdDto;
 import com.doll.dto.ClawRecordDto;
 import com.doll.dto.ExchangeToGoldDto;
 import com.doll.dto.GodRankingDto;
@@ -85,7 +86,7 @@ public class CaptureSuccessController {
 
 
     @PutMapping("/changeStatusAndCoin")
-    public R<String> changeStatus(String captureRecordId){    //修改抓取记录的status,给用户加金币,captureRecordId为多个，以”，“分隔
+    public R<String> changeStatus(@RequestBody CapatureRecordIdDto capatureRecordIdDto){    //修改抓取记录的status,给用户加金币,captureRecordId为多个，以”，“分隔
 //        CaptureSuccess captureSuccess=captureSuccessService.getById(captureRecordId);
 //        Long userId=captureSuccess.getUserId();
 //        Commodity commodity= commodityService.getById(captureSuccess.getCommodityId());
@@ -99,7 +100,7 @@ public class CaptureSuccessController {
 //        userService.updateById(user);
 //        captureSuccessService.updateById(captureSuccess1);
 //        return R.success("修改完成");
-        return captureSuccessService.changeStatusAndCoin(captureRecordId);
+        return captureSuccessService.changeStatusAndCoin(capatureRecordIdDto.getCaptureRecordId());
     }
     @PostMapping("/mailDoll")
     public R<String> MailDoll(Long captureRecordIds,Long addressId){
