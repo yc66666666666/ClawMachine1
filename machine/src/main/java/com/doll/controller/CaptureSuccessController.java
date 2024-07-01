@@ -85,21 +85,26 @@ public class CaptureSuccessController {
 
 
     @PutMapping("/changeStatusAndCoin")
-    @Transactional
-    public R<String> changeStatus(Long captureRecordId){    //修改抓取记录的status,给用户加金币
-        CaptureSuccess captureSuccess=captureSuccessService.getById(captureRecordId);
-        Long userId=captureSuccess.getUserId();
-        Commodity commodity= commodityService.getById(captureSuccess.getCommodityId());
-        Integer value=commodity.getValue().intValue();
-        CaptureSuccess captureSuccess1=new CaptureSuccess();
-        captureSuccess1.setId(captureRecordId);
-        captureSuccess1.setStatus(0);
-        User user=new User();
-        user.setId(userId);
-        user.setCoin(userService.getById(userId).getCoin()+value);
-        userService.updateById(user);
-        captureSuccessService.updateById(captureSuccess1);
-        return R.success("修改完成");
+    public R<String> changeStatus(String captureRecordId){    //修改抓取记录的status,给用户加金币,captureRecordId为多个，以”，“分隔
+//        CaptureSuccess captureSuccess=captureSuccessService.getById(captureRecordId);
+//        Long userId=captureSuccess.getUserId();
+//        Commodity commodity= commodityService.getById(captureSuccess.getCommodityId());
+//        Integer value=commodity.getValue().intValue();
+//        CaptureSuccess captureSuccess1=new CaptureSuccess();
+//        captureSuccess1.setId(Long.valueOf(captureRecordId));
+//        captureSuccess1.setStatus(0);
+//        User user=new User();
+//        user.setId(userId);
+//        user.setCoin(userService.getById(userId).getCoin()+value);
+//        userService.updateById(user);
+//        captureSuccessService.updateById(captureSuccess1);
+//        return R.success("修改完成");
+        return captureSuccessService.changeStatusAndCoin(captureRecordId);
+    }
+    @PostMapping("/mailDoll")
+    public R<String> MailDoll(Long captureRecordIds,Long addressId){
+
+        return R.success("提交订单成功") ;
     }
 
 

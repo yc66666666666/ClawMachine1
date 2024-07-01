@@ -1,6 +1,7 @@
 package com.doll.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.doll.common.R;
 import com.doll.dto.ClawRecordDto;
 import com.doll.dto.ExchangeToGoldDto;
 import com.doll.dto.GodRankingDto;
@@ -17,4 +18,10 @@ public interface CaptureSuccessService extends IService<CaptureSuccess> {
     List<ExchangeToGoldDto> exchangeCoin(Long userId,  int status,int offset,int pageSize);
 
     Integer getMyDollCount( Long userId,int status);
+
+
+    public R<String> changeStatusAndCoin(String captureRecordId);
+
+    public R<String> MailDoll(Long captureRecordIds,Long addressId);
+
 }

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.doll.mapper.OrderMapper">
+
+
+<!--    public List<MailOrderDto> getOrderList(@Param("status") Integer status, @Param("userId") Long userId );-->
+    <select id="getOrderList" resultType="com.doll.dto.MailOrderDto">
+        SELECT mail_order.id  mailOrderId, order_detail.id orderDetailId,mail_order.address_book_id mailOrderAddressBookId,
+          commodity.`name` commodityName  ,commodity.id commodityId ,commodity.image  commodityImage,mail_order.create_time
+      mailOrderCreateTime FROM mail_order  LEFT JOIN order_detail ON mail_order.id=order_detail.order_id
+          LEFT JOIN commodity ON order_detail.commodity_id=commodity.id   LEFT JOIN address_book ON
+              mail_order.address_book_id=address_book.id  WHERE mail_order.`status`=#{status} AND mail_order.user_id=#{userId}
+    </select>
+
+
+<!--    public List<MailOrderDto> getOrderDetailList(@Param("orderDetailId") Long orderDetailId);-->
+    <select id="getOrderDetailList" resultType="com.doll.dto.MailOrderDto">
+        SELECT mail_order.id  mailOrderId, mail_order.courier_number  courierNumber ,order_detail.id orderDetailId, commodity.`name` commodityName  ,commodity.id commodityId
+             ,commodity.image  commodityImage,mail_order.create_time mailOrderCreateTime   FROM    order_detail LEFT JOIN
+            commodity on order_detail.commodity_id=commodity.id LEFT JOIN mail_order ON
+                mail_order.id=order_detail.order_id  WHERE order_detail.id=#{orderDetailId}
+    </select>
+
+
+
+</mapper>
