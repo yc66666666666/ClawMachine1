@@ -2,6 +2,7 @@ package com.doll.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.doll.common.R;
+import com.doll.dto.ExportOrderDto;
 import com.doll.dto.MailOrderDto;
 import com.doll.dto.OrderDto;
 import com.doll.entity.CaptureSuccess;
@@ -76,5 +77,10 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, MailOrder> implem
     @Override
     public MailOrderDto getOrderDetailList(Long orderDetailId) {
         return orderMapper.getOrderDetailList(orderDetailId);
+    }
+
+    @Override
+    public List<ExportOrderDto> getExportOrder() {
+        return orderMapper.getExportOrder();
     }
 }

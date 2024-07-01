@@ -25,4 +25,6 @@ public class MailOrder implements Serializable {
     private String courierNumber ;// 快递品牌及其单号
 
 
+
+
 }

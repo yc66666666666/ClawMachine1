@@ -24,5 +24,16 @@
     </select>
 
 
+<!--    public List<ExportOrderDto> getExportOrder();-->
+    <select id="getExportOrder" resultType="com.doll.dto.ExportOrderDto">
+        SELECT mail_order.id mailOrderId,commodity.id commodityId,commodity.`name` commodityName ,address_book.consignee
+            addressBookConsignee,address_book.phone addressBookPhone, CONCAT(address_book.province_name,'  ',address_book.city_name,'  ',address_book.district_name,'  ',address_book.street_name) address,address_book.detail addressBookDetail , mail_order.remark mailOrderRemark,mail_order.create_time  mailOrderCreateTime FROM mail_order LEFT JOIN order_detail ON mail_order.id=order_detail.order_id  LEFT JOIN address_book
+            ON mail_order.address_book_id=address_book.id LEFT JOIN commodity ON commodity.id=order_detail.commodity_id  WHERE mail_order.`status`=0
+    </select>
+
+
+
+
+
 
 </mapper>
