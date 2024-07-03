@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.annotations.Delete;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -67,6 +68,7 @@ public class CategoryController {
 
     }
     @GetMapping("/list")  //根据type查询category
+//    @PreAuthorize("hasAnyAuthority('superAdmin')")
     public R<List<Category>> list(Category category){
         if(category.getType()==null){
             return R.error("没有对应的分类");

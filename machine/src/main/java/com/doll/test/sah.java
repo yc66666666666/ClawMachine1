@@ -18,8 +18,8 @@ import java.util.concurrent.TimeUnit;
 @SpringBootTest
 public class sah {
 
-//    @Autowired
-//    private RedisTemplate redisTemplate;
+    @Autowired
+    private RedisTemplate redisTemplate;
 @Resource
     private CommodityMapper commodityMapper;
 @Resource
@@ -27,9 +27,12 @@ private CaptureSuccessMapper captureSuccessMapper;
 
     @Test
     public void tcyjugv(){
-//     System.out.println(commodityMapper.getDollOnPhoneInformation(1779064771421671426L));
-     System.out.println(1+3+"ghjv"+1+3);
+////     System.out.println(commodityMapper.getDollOnPhoneInformation(1779064771421671426L));
+//     System.out.println(1+3+"ghjv"+1+3);
 //        System.out.println(redisTemplate.type("myset").name()); ;
+
+
+        redisTemplate.opsForValue().set("15720906666","521171");
 
         System.out.println(captureSuccessMapper.getGodRanking(4));
 

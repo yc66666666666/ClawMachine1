@@ -3,6 +3,7 @@ package com.doll.controller;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.doll.common.R;
+import com.doll.dto.LoginUser;
 import com.doll.dto.MailOrderDto;
 import com.doll.dto.OrderDto;
 import com.doll.entity.AddressBook;
@@ -17,6 +18,8 @@ import com.doll.utils.ExportFileUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -93,7 +96,12 @@ public class OrderController {
     }
 
     @GetMapping("/getOrders")
+//    @PreAuthorize("hasAuthority('user')")
     public R<Page<MailOrder>> getOrders(Integer page,Integer pageSize){
+
+//        LoginUser loginUser=(LoginUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//        System.out.println(loginUser.getUser().getId());
+
         Page<MailOrder> page1=new Page<>(page,pageSize);
         LambdaQueryWrapper<MailOrder> queryWrapper=new LambdaQueryWrapper<>();
         queryWrapper.eq(MailOrder::getStatus,0);

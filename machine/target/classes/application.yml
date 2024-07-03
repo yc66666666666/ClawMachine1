@@ -60,7 +60,10 @@ mymqtt:
 #  topic: /sys/k1fjo6CPtMr/app_dev_3/thing/event/property/post
 
 
-
+jwt:
+  secret: 12345
+#  expiration: 1000*60*60*24
+  expiration: 86400000
 
 
 

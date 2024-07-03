@@ -1,6 +1,7 @@
 package com.doll.utils;
 
 public class PrivacyProtectionUtils {
+         //用于给大神榜打码
          //java 11 及以上才能用
 //        public static String anonymizeNickname(String nickname) {
 //            if (nickname == null || nickname.isEmpty()) {

@@ -27,6 +27,10 @@ public class Employee implements Serializable {
 
     private Integer status;
 
+    //管理员角色
+    private String role;
+
+
     @TableField(fill = FieldFill.INSERT)
     private LocalDateTime createTime;
 

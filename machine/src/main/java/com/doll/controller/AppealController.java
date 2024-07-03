@@ -63,8 +63,6 @@ public class AppealController {
             captureSuccess1.setIsSuccess(2);
             captureSuccessService.updateById(captureSuccess1);
 
-
-
             User user=new User();
             user.setId(appealDto.getUserId());
             user.setCoin(appealDto.getPrice().intValue()+userService.getById(appealDto.getUserId()).getCoin());
