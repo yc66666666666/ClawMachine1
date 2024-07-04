@@ -72,6 +72,7 @@ public class AuthenticationController {
         employeeReturnDto.setJwt(jwt);
         employeeReturnDto.setUserId(userId);
         employeeReturnDto.setRole(loginEmployee.getEmployee().getRole());
+        employeeReturnDto.setUserName(loginEmployee.getEmployee().getUsername());
         return R.success(employeeReturnDto);
 
 //        final UserDetails userDetails = adminUserDetailsService.loadUserByUsername(authenticationRequest.getUsername());

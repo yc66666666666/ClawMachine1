@@ -12,6 +12,8 @@ public class EmployeeReturnDto  implements Serializable {
 
     private Long userId;
 
+    private String userName ;
+
     private String role;
 
 
