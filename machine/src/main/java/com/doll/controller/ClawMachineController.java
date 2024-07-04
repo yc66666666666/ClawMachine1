@@ -15,6 +15,7 @@ import com.doll.service.ComponentService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -66,6 +67,7 @@ public class ClawMachineController {
 
 
     @PostMapping
+    @PreAuthorize("hasAnyAuthority('admin','superAdmin')")
     public R<String> save(@RequestBody ClawMachine clawMachine){
         log.info(clawMachine.toString());
 //        clawMachineService.save(clawMachine);
@@ -139,6 +141,7 @@ public class ClawMachineController {
 
 
     @DeleteMapping
+    @PreAuthorize("hasAnyAuthority('admin','superAdmin')")
     public R<String> delete(String ids){
         log.info("被删除的分类为:{}",ids);
         clawMachineService.deleteByIds1(ids);
@@ -154,6 +157,7 @@ public class ClawMachineController {
 
 
     @PutMapping
+    @PreAuthorize("hasAnyAuthority('admin','superAdmin')")
     public R<String> update(@RequestBody ClawMachine clawMachine){
         log.info(clawMachine.toString());
 //        clawMachineService.updateById(clawMachine);
@@ -162,6 +166,7 @@ public class ClawMachineController {
     }
 
     @PostMapping("/status/{status}")
+    @PreAuthorize("hasAnyAuthority('admin','superAdmin')")
     public R<String> changeStatus(@PathVariable int status,String ids){
         clawMachineService.changeStatus(status,ids);
         return R.success("娃娃机状态修改成功");

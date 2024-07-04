@@ -9,6 +9,7 @@ import com.doll.service.RechargeService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
@@ -27,6 +28,7 @@ public class RechargeController {
     private RechargeService rechargeService;
 
     @PostMapping
+    @PreAuthorize("hasAnyAuthority('admin','superAdmin')")
     public R<String> save(@RequestBody Recharge recharge){
         rechargeService.save(recharge);
         return R.success("添加充值卡成功");
@@ -67,12 +69,14 @@ public class RechargeController {
     }
 
     @PutMapping
+    @PreAuthorize("hasAnyAuthority('admin','superAdmin')")
     public R<String> update(@RequestBody Recharge recharge){
         rechargeService.updateById(recharge);
         return R.success("充值卡信息修改成功");
     }
 
     @DeleteMapping
+    @PreAuthorize("hasAnyAuthority('admin','superAdmin')")
     public R<String> delete(String ids){
         rechargeService.deleteByIds(ids);
         return R.success("充值卡删除成功");

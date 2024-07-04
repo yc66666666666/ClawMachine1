@@ -19,6 +19,7 @@ import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
@@ -46,6 +47,7 @@ public class CommodityController {
 //    @CachePut(value = "commodityCache",key = "#commodity.id")
     @CacheEvict(value = "commodityCache" ,allEntries = true)
     @PostMapping
+    @PreAuthorize("hasAnyAuthority('admin','superAdmin')")
     public R<String> save(@RequestBody Commodity commodity){
         log.info(commodity.toString());
 //        commodity.setValue(BigDecimal.valueOf(12)); //测试用
@@ -105,6 +107,7 @@ public class CommodityController {
 //    @CacheEvict(value ="commodityCache",key = "#commodity.id" )
     @CacheEvict(value = "commodityCache" , allEntries = true)
     @PutMapping
+    @PreAuthorize("hasAnyAuthority('admin','superAdmin')")
     public R<String> update(@RequestBody Commodity commodity){
         log.info(commodity.toString());
         commodityService.updateById(commodity);
@@ -113,6 +116,7 @@ public class CommodityController {
 
     @CacheEvict(value = "commodityCache" , allEntries = true)
     @PostMapping("/status/{status}")
+    @PreAuthorize("hasAnyAuthority('admin','superAdmin')")
     public R<String> changeStatus(@PathVariable int status, String ids){
         commodityService.changeStatus(status, ids);
         return R.success("商品状态修改成功");
@@ -121,6 +125,7 @@ public class CommodityController {
 //    @CacheEvict(value = "commodityCache",key = "#ids")
     @CacheEvict(value = "commodityCache",allEntries = true)
     @DeleteMapping
+    @PreAuthorize("hasAnyAuthority('admin','superAdmin')")
     public R<String> delete(String ids){
         commodityService.removeByIds1(ids);
         return R.success("成功删除商品");

@@ -27,6 +27,7 @@ public class CategoryController {
     private RedisTemplate redisTemplate;
 
     @PostMapping
+    @PreAuthorize("hasAnyAuthority('admin','superAdmin')")
     public R<String> save(@RequestBody Category category){
         log.info("添加分类{}",category.toString());
         categoryService.save(category);
@@ -50,6 +51,7 @@ public class CategoryController {
         return  R.success(pageInfo);
     }
     @DeleteMapping
+    @PreAuthorize("hasAnyAuthority('admin','superAdmin')")
     public R<String> delete(Long ids){
         log.info("被删除的分类id为:{}",ids);
 //        categoryService.removeById(id);
@@ -59,6 +61,7 @@ public class CategoryController {
         return  R.success("分类删除成功");
     }
     @PutMapping
+    @PreAuthorize("hasAnyAuthority('admin','superAdmin')")
     public  R<String> update(@RequestBody Category category){
       log.info("修改了分类的信息为{}",category);
       categoryService.updateById(category);

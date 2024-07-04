@@ -73,6 +73,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/employee/login").anonymous()
                 .antMatchers("/user/loginWithCode").anonymous()
                 .antMatchers("/user/sendMsg").anonymous()
+                .antMatchers("/component/**").hasAnyAuthority("admin","superAdmin")
                 .anyRequest().authenticated();
 
         //添加过滤器

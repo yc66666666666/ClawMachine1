@@ -11,6 +11,7 @@ import com.doll.service.ComponentService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -27,6 +28,7 @@ public class ComponentController {
     private CategoryService categoryService;
 
     @PostMapping
+//    @PreAuthorize("hasAnyAuthority('admin','superAdmin')")
     public R<String> save(@RequestBody Component component){
         log.info(component.toString());
         componentService.save(component);
@@ -34,6 +36,7 @@ public class ComponentController {
     }
 
     @GetMapping("/page")
+//    @PreAuthorize("hasAnyAuthority('admin','superAdmin')")
     public R<Page> pageR(int page,int pageSize,String name){
         log.info("page={},pageSize={},name={}",page,pageSize,name);
         Page<Component> page1=new Page<>(page,pageSize);

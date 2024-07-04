@@ -13,6 +13,7 @@ import com.doll.service.CaptureSuccessService;
 import com.doll.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
@@ -39,6 +40,7 @@ public class AppealController {
     }
 
     @GetMapping("/page")  //管理员权限,未审批的申诉
+    @PreAuthorize("hasAnyAuthority('admin','superAdmin')")
     public R<Page<Appeal>> listR (int page ,int pageSize,String reason){
         Page<Appeal> page1=new Page<>(page,pageSize);
         LambdaQueryWrapper<Appeal> queryWrapper =new LambdaQueryWrapper<>();
@@ -50,6 +52,7 @@ public class AppealController {
     }
 
     @PutMapping("/handleAppeal")  //type为0表示驳回，1表示同意退回金币,管理员用
+    @PreAuthorize("hasAnyAuthority('admin','superAdmin')")
     public  R<String> handleAppeal(Long clawRecordId,Long appealId,int type){
         if (type==0){
             CaptureSuccess captureSuccess1=new CaptureSuccess();

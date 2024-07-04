@@ -96,7 +96,7 @@ public class OrderController {
     }
 
     @GetMapping("/getOrders")
-//    @PreAuthorize("hasAuthority('user')")
+    @PreAuthorize("hasAnyAuthority('admin','superAdmin')")
     public R<Page<MailOrder>> getOrders(Integer page,Integer pageSize){
 
 //        LoginUser loginUser=(LoginUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -108,6 +108,7 @@ public class OrderController {
         return R.success(orderService.page(page1,queryWrapper));
     }
     @PutMapping("/addCourierNumberAndBrand")
+    @PreAuthorize("hasAnyAuthority('admin','superAdmin')")
     public R<String> addCourierNumberAndBrand(Long orderId,String courierNumberAndBrand){
         MailOrder mailOrder=new MailOrder();
         mailOrder.setId(orderId);
@@ -116,8 +117,6 @@ public class OrderController {
         orderService.updateById(mailOrder);
         return R.success("添加成功");
     }
-
-
 
 
 }
