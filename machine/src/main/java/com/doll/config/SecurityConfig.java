@@ -5,6 +5,7 @@ import com.doll.common.AuthenticationEntryPointImpl;
 import com.doll.filter.JwtRequestFilter;
 import com.doll.service.impl.AdminUserDetailsService;
 import com.doll.service.impl.CustomAuthenticationProvider;
+import com.doll.service.impl.EmployeeAuthenticationProvider;
 import com.doll.service.impl.UserUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -43,7 +44,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private UserDetailsService userUserDetailsService;
 
     @Autowired
+    @Qualifier("userAuthentication")
     private CustomAuthenticationProvider customAuthenticationProvider;
+
+    @Autowired
+    @Qualifier("employeeAuthentication")
+    private EmployeeAuthenticationProvider employeeAuthenticationProvider;
 
 
     @Autowired
@@ -59,7 +65,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(adminUserDetailsService).passwordEncoder(passwordEncoder());
+//        auth.userDetailsService(adminUserDetailsService).passwordEncoder(passwordEncoder());
+        auth.authenticationProvider(employeeAuthenticationProvider);
         auth.authenticationProvider(customAuthenticationProvider);
     }
 

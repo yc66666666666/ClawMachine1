@@ -1,8 +1,10 @@
 package com.doll.service.impl;
 
+
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.doll.entity.User;
 import com.doll.mapper.UserMapper;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -15,10 +17,12 @@ import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
-@Component("userAuthentication")
-public class CustomAuthenticationProvider implements AuthenticationProvider {
+@Component("employeeAuthentication")
+public class EmployeeAuthenticationProvider implements AuthenticationProvider {
 
 //    @Autowired
 //    private UserUserDetailsService userUserDetailsService;
@@ -29,40 +33,27 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 
 
     @Autowired
-    @Qualifier("userUserDetailsService")
-    private UserDetailsService userUserDetailsService;
+    @Qualifier("adminUserDetailsService")
+    private UserDetailsService adminUserDetailsService;
 
     @Autowired
-    private UserMapper userMapper;
+    private PasswordEncoder passwordEncoder ;
 
-//     @Autowired
-//    private UserUserDetailsService userUserDetailsService ;
-
-    @Autowired
-    private RedisTemplate redisTemplate;
 
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-        String phone = authentication.getName();
-        String code = (String) authentication.getCredentials();
-        UserDetails userDetails = userUserDetailsService.loadUserByUsername(phone);
+        String username = authentication.getName();
+        String password=(String) authentication.getCredentials();
+        UserDetails userDetails = adminUserDetailsService.loadUserByUsername(username);
 //        UserDetails userDetails = userUserDetailsService.loadUserByUsername(phone);
 //        UserDetails userDetails = new org.springframework.security.core.userdetails.User(phone,code,AuthorityUtils.commaSeparatedStringToAuthorityList("123"));
 
-//        LambdaQueryWrapper<User> queryWrapper=new LambdaQueryWrapper<>();
-//        queryWrapper.eq(User::getPhone,phone);
-//        User user=userMapper.selectOne(queryWrapper);
 
-        if (userDetails == null) {
+        boolean isSuccess=passwordEncoder.matches(password,userDetails.getPassword()) ;
+        if (!isSuccess){
             throw new UsernameNotFoundException("User not found");
         }
-
-
-        if (!code.equals(redisTemplate.opsForValue().get(phone))) {
-            throw new BadCredentialsException("Invalid verification code");
-        }
-//        return (Authentication) userDetails;
 
         return new UsernamePasswordAuthenticationToken(userDetails,null,userDetails.getAuthorities());
     }
@@ -72,4 +63,3 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
         return UsernamePasswordAuthenticationToken.class.isAssignableFrom(authentication);
     }
 }
-

@@ -37,11 +37,11 @@ private PasswordEncoder passwordEncoder;
 //     System.out.println(1+3+"ghjv"+1+3);
 //        System.out.println(redisTemplate.type("myset").name()); ;
 
-//        String password = passwordEncoder.encode("12345678");
-//        System.out.println(password);
-//        System.out.println(passwordEncoder.matches("12345678",password));
+        String password = passwordEncoder.encode("password");
+        System.out.println(password);
+        System.out.println(passwordEncoder.matches("password",password));
 
-          System.out.println(DigestUtils.md5DigestAsHex("12345678".getBytes()));
+//          System.out.println(DigestUtils.md5DigestAsHex("12345678".getBytes()));
 
 
 
