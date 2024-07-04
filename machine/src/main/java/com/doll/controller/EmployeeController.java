@@ -62,12 +62,10 @@ public class EmployeeController {
     public R<String> save(HttpServletRequest request,@RequestBody Employee employee){
         log.info("新增员工,员工信息:{}",employee.toString());
         log.info("新增员工,员工信息:{}",employee.getIdNumber().substring(employee.getIdNumber().length()-8));
-
-        employee.setPassword(passwordEncoder.encode(employee.getIdNumber()).substring(employee.getIdNumber().length()-8));
+        String password=passwordEncoder.encode(employee.getIdNumber().substring(employee.getIdNumber().length()-8));
+        System.out.println(password);
+        employee.setPassword(password);
         employee.setRole("admin");
-        //设置密码为身份证后八位
-        employee.setPassword(DigestUtils.md5DigestAsHex(employee.getIdNumber().substring(employee.getIdNumber().length()-8).getBytes()));
-        Long empId=(Long) request.getSession().getAttribute("employee");
         employeeService.save(employee);
         return  R.success("新增员工成功");
     }

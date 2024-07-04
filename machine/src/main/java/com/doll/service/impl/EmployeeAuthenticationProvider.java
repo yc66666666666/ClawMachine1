@@ -36,6 +36,7 @@ public class EmployeeAuthenticationProvider implements AuthenticationProvider {
     @Qualifier("adminUserDetailsService")
     private UserDetailsService adminUserDetailsService;
 
+
     @Autowired
     private PasswordEncoder passwordEncoder ;
 

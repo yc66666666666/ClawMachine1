@@ -68,6 +68,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //        auth.userDetailsService(adminUserDetailsService).passwordEncoder(passwordEncoder());
         auth.authenticationProvider(employeeAuthenticationProvider);
         auth.authenticationProvider(customAuthenticationProvider);
+
     }
 
     @Override
