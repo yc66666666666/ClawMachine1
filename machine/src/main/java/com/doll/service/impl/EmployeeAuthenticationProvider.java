@@ -23,6 +23,7 @@ import org.springframework.stereotype.Component;
 
 @Component("employeeAuthentication")
 public class EmployeeAuthenticationProvider implements AuthenticationProvider {
+    //管理员自定义验证方法
 
 //    @Autowired
 //    private UserUserDetailsService userUserDetailsService;
