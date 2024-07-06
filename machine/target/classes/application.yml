@@ -1,11 +1,11 @@
 server:
-  port: 443      #tomcat端口号,https默认端口
-#  port: 8080    #  tomcat端口号
+#  port: 443      #tomcat端口号,https默认端口
+  port: 8080    #  tomcat端口号
 
-  ssl:   #搞https的.
-    key-store: classpath:xswwj.cn.jks
-    key-store-type: JKS
-    key-store-password: aC6LGKBtSrVrU5@
+#  ssl:   #搞https的.
+#    key-store: classpath:xswwj.cn.jks
+#    key-store-type: JKS
+#    key-store-password: aC6LGKBtSrVrU5@
 spring:
 
   application:
@@ -44,8 +44,8 @@ mybatis-plus:
     db-config:
       id-type: ASSIGN_ID
 doll:
-#  path: D:\img1\    #window
-  path: /usr/local/img/    #linux
+  path: D:\img1\    #window
+#  path: /usr/local/img/    #linux
 
 #用于摄像头的
 camera:
