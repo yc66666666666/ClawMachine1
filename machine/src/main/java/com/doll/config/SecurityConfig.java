@@ -83,6 +83,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/employee/login").anonymous()
                 .antMatchers("/user/loginWithCode").anonymous()
                 .antMatchers("/user/sendMsg").anonymous()
+                .antMatchers("/common/upload").permitAll()
+                .antMatchers("/common/download").permitAll()
                 .antMatchers("/component/**").hasAnyAuthority("admin","superAdmin")
                 .anyRequest().authenticated();
 //                .and()
