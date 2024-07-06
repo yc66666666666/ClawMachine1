@@ -22,6 +22,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.firewall.HttpFirewall;
+import org.springframework.security.web.firewall.StrictHttpFirewall;
 
 @Configuration
 @EnableWebSecurity//Spring项目需要添加此注释，SpringBoot项目中不需要
@@ -83,6 +85,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/user/sendMsg").anonymous()
                 .antMatchers("/component/**").hasAnyAuthority("admin","superAdmin")
                 .anyRequest().authenticated();
+//                .and()
+//                .headers(headers -> headers
+//                        .contentTypeOptions(contentTypeOptions -> contentTypeOptions.disable())
+//                        .frameOptions(frameOptions -> frameOptions.sameOrigin())
+//                        .httpStrictTransportSecurity(hsts -> hsts.includeSubDomains(true).maxAgeInSeconds(31536000))
+//                        .contentSecurityPolicy(csp -> csp.policyDirectives("default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'"))
+//                );
+
 
         //添加过滤器
         http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
@@ -108,4 +118,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
     }
+
+
+//    @Bean   //允许”//“
+//    public HttpFirewall allowDoubleSlashHttpFirewall() {
+//        StrictHttpFirewall firewall = new StrictHttpFirewall();
+//        // 允许双//
+//        firewall.setAllowUrlEncodedDoubleSlash(true);
+//        return firewall;
+//    }
+
+
 }
