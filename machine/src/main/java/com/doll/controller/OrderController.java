@@ -86,7 +86,7 @@ public class OrderController {
     }
 
 
-    @GetMapping("/export")
+    @PostMapping("/export")
     @PreAuthorize("hasAnyAuthority('admin','superAdmin')")
     public String exportAddressBook(@RequestBody Map<String,String>  map ) {
         String filePath=map.get("filePath");
