@@ -3,6 +3,7 @@ package com.doll.controller;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.doll.common.R;
+import com.doll.dto.ExportOrderDto;
 import com.doll.dto.LoginUser;
 import com.doll.dto.MailOrderDto;
 import com.doll.dto.OrderDto;
@@ -24,8 +25,10 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -84,16 +87,21 @@ public class OrderController {
 
 
     @GetMapping("/export")
-    public String exportAddressBook(String filePath ) {
+    @PreAuthorize("hasAnyAuthority('admin','superAdmin')")
+    public String exportAddressBook(@RequestBody Map<String,String>  map ) {
+        String filePath=map.get("filePath");
 //        String filePath = "D:/img1/orders.xlsx";
             filePath=filePath+".xlsx";
         try {
-            ExportFileUtils.writeAddressBookToExcel( orderService.getExportOrder(),filePath);
+            List<ExportOrderDto> exportOrderDtoList=new ArrayList<>();
+            exportOrderDtoList=orderService.getExportOrder();
+            ExportFileUtils.writeAddressBookToExcel(exportOrderDtoList,filePath);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
         return "file created: " + filePath;
     }
+
 
     @GetMapping("/getOrders")
     @PreAuthorize("hasAnyAuthority('admin','superAdmin')")

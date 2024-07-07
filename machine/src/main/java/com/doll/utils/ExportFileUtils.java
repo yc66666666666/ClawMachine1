@@ -1,5 +1,6 @@
 package com.doll.utils;
 
+import com.aliyuncs.utils.StringUtils;
 import com.doll.dto.ExportOrderDto;
 import com.doll.entity.MailOrder;
 //import com.opencsv.CSVWriter;
@@ -35,14 +36,14 @@ public class ExportFileUtils {
 
             for (ExportOrderDto exportOrderDto : exportOrderDtoList) {
                 Row row = sheet.createRow(rowNum++);
-                row.createCell(0).setCellValue(exportOrderDto.getMailOrderId().toString());
-                row.createCell(1).setCellValue(exportOrderDto.getCommodityId().toString());
-                row.createCell(2).setCellValue(exportOrderDto.getCommodityName());
-                row.createCell(3).setCellValue(exportOrderDto.getAddressBookConsignee());
-                row.createCell(4).setCellValue(exportOrderDto.getAddress());
-                row.createCell(5).setCellValue(exportOrderDto.getAddressBookDetail());
-                row.createCell(6).setCellValue(exportOrderDto.getMailOrderRemark());
-                row.createCell(7).setCellValue(exportOrderDto.getMailOrderCreateTime().toString());
+                row.createCell(0).setCellValue(exportOrderDto.getMailOrderId()!=null ? exportOrderDto.getMailOrderId().toString():"无");
+                row.createCell(1).setCellValue(exportOrderDto.getCommodityId()!=null ? exportOrderDto.getCommodityId().toString():"无");
+                row.createCell(2).setCellValue(StringUtils.isEmpty(exportOrderDto.getCommodityName())? "无":exportOrderDto.getCommodityName() );
+                row.createCell(3).setCellValue(StringUtils.isEmpty(exportOrderDto.getAddressBookConsignee())? "无": exportOrderDto.getAddressBookConsignee());
+                row.createCell(4).setCellValue(StringUtils.isEmpty(exportOrderDto.getAddress())? "无": exportOrderDto.getAddress());
+                row.createCell(5).setCellValue(StringUtils.isEmpty(exportOrderDto.getAddressBookDetail())? "无": exportOrderDto.getAddressBookDetail());
+                row.createCell(6).setCellValue(StringUtils.isEmpty(exportOrderDto.getMailOrderRemark()) ? "无":exportOrderDto.getMailOrderRemark());
+                row.createCell(7).setCellValue(exportOrderDto.getMailOrderCreateTime()!=null ?  exportOrderDto.getMailOrderCreateTime().toString():"无");
                 // 填充其他列数据
             }
 
