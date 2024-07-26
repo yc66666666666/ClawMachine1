@@ -85,6 +85,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/user/sendMsg").anonymous()
                 .antMatchers("/common/upload").permitAll()
                 .antMatchers("/common/download").permitAll()
+                .antMatchers("/getWXOAuth2Code").permitAll()
+                .antMatchers("/wx-oauth-code-return").permitAll()
+                .antMatchers("/**").permitAll()
                 .antMatchers("/component/**").hasAnyAuthority("admin","superAdmin")
                 .anyRequest().authenticated();
 //                .and()

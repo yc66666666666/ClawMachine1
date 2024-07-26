@@ -1,6 +1,7 @@
 package com.guigui;
 
 import com.doll.mapper.CommodityMapper;
+import com.doll.utils.PayUtils;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -11,6 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.annotation.Resource;
+import javax.crypto.IllegalBlockSizeException;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -22,7 +24,9 @@ public class Test2 {
 //    private RedisTemplate redisTemplate;
 
     @Test
-    public void tcyjugv(){
+    public void tcyjugv() throws IllegalBlockSizeException, IOException {
+
+//        System.out.println(PayUtils.createOrder());
 //     System.out.println(commodityMapper.getUserByName11("11"));
 
 //         ValueOperations valueOperations=    redisTemplate.opsForValue();

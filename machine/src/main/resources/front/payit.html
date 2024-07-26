@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0">
+    <title>微信支付</title>
+    <link rel="stylesheet" type="text/css" href="https://res.wx.qq.com/open/libs/weui/0.4.1/weui.css">
+</head>
+<body>
+<script type="text/javascript">
+    var ua = navigator.userAgent.toLowerCase();
+    var isWeixin = ua.indexOf('micromessenger') !== -1;
+    if (isWeixin) {
+        // 在微信内置浏览器中
+        window.location.href = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxd937a072abdf46f2&redirect_uri=https://upbaby.qzhuanyou.com/wx-oauth-code-return&response_type=code&scope=snsapi_base&state=STATE#wechat_redirect";
+    } else {
+        // 非微信内置浏览器
+        document.body.innerHTML = '<div class="weui_msg"><div class="weui_icon_area"><i class="weui_icon_info weui_icon_msg"></i></div><div class="weui_text_area"><h4 class="weui_msg_title">请在微信客户端打开链接</h4></div></div>';
+    }
+</script>
+</body>
+</html>

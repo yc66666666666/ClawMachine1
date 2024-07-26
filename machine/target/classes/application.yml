@@ -2,12 +2,16 @@ server:
 #  port: 443      #tomcat端口号,https默认端口
   port: 8080    #  tomcat端口号
 
-#  ssl:   #搞https的.
+#  ssl:   #搞https的.xswwj.cn域名的
 #    key-store: classpath:xswwj.cn.jks
 #    key-store-type: JKS
 #    key-store-password: aC6LGKBtSrVrU5@
-spring:
 
+#  ssl:   #搞https的upbaby.qzhuanyou.com域名的
+#    key-store: classpath:upbaby.qzhuanyou.com.jks
+#    key-store-type: JKS
+#    key-store-password: 92w57hrrknv
+spring:
   application:
     name: doll
     #应用名称，可选
@@ -65,6 +69,25 @@ jwt:
   secret: 12345
 #  expiration: 1000*60*60*24
   expiration: 86400000
+
+
+#wxPay:
+##  公众号
+#  appId: wxd937a072abdf46f2
+#  appSecret: 555f1bc8865894eeb45e5c23966c668e
+##  jsApi支付相关
+#  jsApi:
+##    商户号
+#    mchId: 1680608250
+##  商户API证书的证书序列号
+#    mchSerialNo: 36EB192FE0C3489797917B03A6807B8E6DCB2DA7
+#
+#    apiV3Key: aswvndrbonrbnoarnbren23nfoso492s
+#
+#    notifyUrl:
+
+
+
 
 
 
