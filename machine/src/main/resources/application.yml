@@ -5,12 +5,12 @@ server:
 #  ssl:   #搞https的.xswwj.cn域名的
 #    key-store: classpath:xswwj.cn.jks
 #    key-store-type: JKS
-#    key-store-password: aC6LGKBtSrVrU5@
+#    key-store-password: *******
 
 #  ssl:   #搞https的upbaby.qzhuanyou.com域名的
 #    key-store: classpath:upbaby.qzhuanyou.com.jks
 #    key-store-type: JKS
-#    key-store-password: 92w57hrrknv
+#    key-store-password: ******
 spring:
   application:
     name: doll
@@ -22,12 +22,12 @@ spring:
       #47.120.44.182为mysql所在服务器的ip
       username: root
       #mysql用户
-      password: aC6LGKBtSrVrU5@
+      password: *******
       #mysql密码
   redis:
     host: 47.116.210.128
     port: 6379
-    password: aC6LGKBtSrVrU5@   #redis的密码
+    password: ******   #redis的密码
     database: 0
   cache:
     redis:
@@ -53,8 +53,8 @@ doll:
 
 #用于摄像头的
 camera:
-  APP_KEY: 37ee314914d949f7a1be8659633b8494
-  APP_SECRET: c662cfa22c1edc6cef5c4766a42ebe7e
+  APP_KEY: *************
+  APP_SECRET: *************
   ACCESS_TOKEN_URL: https://open.ys7.com/api/lapp/token/get
   VIDEO_URL: https://open.ys7.com/api/lapp/v2/live/address/get
 
@@ -73,16 +73,16 @@ jwt:
 
 #wxPay:
 ##  公众号
-#  appId: wxd937a072abdf46f2
-#  appSecret: 555f1bc8865894eeb45e5c23966c668e
+#  appId: ***************
+#  appSecret: ********************
 ##  jsApi支付相关
 #  jsApi:
 ##    商户号
-#    mchId: 1680608250
+#    mchId: ****
 ##  商户API证书的证书序列号
-#    mchSerialNo: 36EB192FE0C3489797917B03A6807B8E6DCB2DA7
+#    mchSerialNo: *****************
 #
-#    apiV3Key: aswvndrbonrbnoarnbren23nfoso492s
+#    apiV3Key: ************
 #
 #    notifyUrl:
 

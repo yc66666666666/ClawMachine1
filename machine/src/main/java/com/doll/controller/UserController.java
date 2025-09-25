@@ -49,7 +49,7 @@ public class UserController {
         String phone=user.getPhone();
         if(!StringUtils.isEmpty(phone)){
             String code= ValidateCodeUtils.generateValidateCode(6).toString();
-            SMSUtils.sendMessage("泉州寰游科技","SMS_300165018",phone,code);
+            SMSUtils.sendMessage("*******","********",phone,code);
 //            session.setAttribute(phone,code);   //把验证码存放在session里
             redisTemplate.opsForValue().set(phone,code,60, TimeUnit.MINUTES);  //把验证码存放在redis里，有效期为5分钟
             return R.success("手机验证码发送成功");
